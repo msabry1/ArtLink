@@ -1,10 +1,11 @@
-import Header from "./components/Header/Header"
+import './App.css'
+import CanvasPage from './pages/CanvasPage'
 
 function App() {
 
   return (
     <>
-      <Header></Header>
+      <CanvasPage></CanvasPage>
     </>
   )
 }
