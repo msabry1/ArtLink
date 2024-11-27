@@ -40,8 +40,10 @@
     border: none;
     font-weight: bold;
 }
-.ToolBar button:hover{
-    background-color: var(--main-color);
+
+.ToolBar button:hover,
+.selected{
+    background-color: var(--main-color) !important;
     color: white;
 }
 

@@ -17,11 +17,18 @@
   transition: opacity 0.3s ease;
 }
 
-.shapesMenu button span{
+.selected{
+  background-color: var(--main-color) !important;
+  color: white;
+}
+
+
+span{
   display: block;
   width: 25px;
   margin: auto;
 }
+
 
 
 .shapesMenu button:last-child{
@@ -38,7 +45,8 @@
   background-color: black;
   transform: rotate(135deg);
 }
-.shapesMenu button:hover .line{
+.shapesMenu button:hover .line,
+.selected .line{
   background-color: white;
 }
 
@@ -67,12 +75,11 @@
   line-height: 1;
 }
 
-.shapesMenu button:hover .triangle {
-  border-bottom-color: white;
-}
-
-.shapesMenu button:hover .rectangle,
-.shapesMenu button:hover .circle,
-.shapesMenu button:hover .elipse {
+button:hover .rectangle,
+button:hover .circle,
+button:hover .elipse,
+.selected .rectangle,
+.selected .circle,
+.selected .elipse{
   border-color: white;
 }
