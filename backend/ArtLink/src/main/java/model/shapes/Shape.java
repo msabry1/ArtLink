@@ -6,4 +6,6 @@ public abstract class Shape {
     private String id;
     private String fill;
     private String stroke;
+    private String strokeColor;
+    private String strokeWidth;
 }
