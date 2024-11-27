@@ -1,0 +1,35 @@
+.container {
+  position: relative;
+  display: flex;
+}
+
+.sliderContainer {
+  position: absolute;
+  background-color: var(--secondary-color);
+  left: 100%;
+
+  display: flex;
+  justify-content: space-evenly;
+  align-items: center;
+
+  width: 200px;
+  padding: 0px 10px;
+  border-top-right-radius: 50px;
+  border-bottom-right-radius: 50px;
+
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.sliderContainer label {
+    font-size: 0.6rem;
+    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+}
+
+.sliderContainer .slider {
+    width: 100px !important;
+}
+
+.container:hover .sliderContainer {
+    opacity: 1;
+}
