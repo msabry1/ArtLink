@@ -4,13 +4,8 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {  
     faCircle,
     faDrawPolygon,
-    faEllipsisH,
-    faEllipsisVertical,
-    faLineChart,
     faShapes,
     faSquare,
-    faTriangleCircleSquare,
-    faXmarksLines,
 
 } from '@fortawesome/free-solid-svg-icons';
 
@@ -30,12 +25,12 @@ function ShapeSelector({ preselectedTool, onSelect }) {
     <div className={styles.container}>
       <button className={styles.button}><FontAwesomeIcon icon={faShapes}/></button>
       <div className={styles.shapesMenu}>
-        <button value={"Line"}><FontAwesomeIcon icon={faShapes}/></button>
-        <button value={"Line"}><FontAwesomeIcon icon={faSquare}/></button>
-        <button value={"Line"}><FontAwesomeIcon icon={faCircle}/></button>
-        <button value={"Line"}><FontAwesomeIcon icon={faShapes}/></button>
-        <button value={"Line"}><FontAwesomeIcon icon={faDrawPolygon}/></button>
-        <button value={"Line"}><FontAwesomeIcon icon={faShapes}/></button>
+        <button value={"line"}><span className={styles.line}></span></button>
+        <button value={"rectangle"}><span className={styles.rectangle}></span></button>
+        <button value={"circle"}><span className={styles.circle}></span></button>
+        <button value={"elipse"}><span className={styles.elipse}></span></button>
+        <button value={"polygon"}><FontAwesomeIcon icon={faDrawPolygon}/></button>
+        <button value={"triangle"}><span className={styles.triangle}>&#9651;</span></button>
       </div>
     </div>
   );

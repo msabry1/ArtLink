@@ -17,6 +17,13 @@
   transition: opacity 0.3s ease;
 }
 
+.shapesMenu button span{
+  display: block;
+  width: 25px;
+  margin: auto;
+}
+
+
 .shapesMenu button:last-child{
   border-top-right-radius: 50px;
   border-bottom-right-radius: 50px;
@@ -24,4 +31,48 @@
 
 .container:hover .shapesMenu {
   opacity: 1;
+}
+
+.line {
+  height: 3px;
+  background-color: black;
+  transform: rotate(135deg);
+}
+.shapesMenu button:hover .line{
+  background-color: white;
+}
+
+.rectangle {
+  height: 15px;
+  border-radius: 2px;
+  border: solid 3px black;
+}
+
+.circle {
+  height: 25px;
+  border-radius: 50%;
+  border: solid 3px black;
+}
+
+.elipse {
+  height: 15px;
+  border-radius: 100%;
+  border: solid 3px black;
+}
+
+.triangle {
+  font-family: Arial, sans-serif;
+  font-size: 1.5rem; /* Adjust the size as needed */
+  display: inline-block;
+  line-height: 1;
+}
+
+.shapesMenu button:hover .triangle {
+  border-bottom-color: white;
+}
+
+.shapesMenu button:hover .rectangle,
+.shapesMenu button:hover .circle,
+.shapesMenu button:hover .elipse {
+  border-color: white;
 }
