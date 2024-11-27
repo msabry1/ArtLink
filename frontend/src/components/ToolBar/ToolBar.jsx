@@ -10,11 +10,15 @@ import {
 } from '@fortawesome/free-solid-svg-icons'
 import { useState } from 'react';
 import ColorPicker from '../tools/ColorPicker/ColorPicker';
+import WeightSlider from '../tools/WeightSlider/WeightSlider';
+import ShapeSelector from '../tools/ShapeSelector/ShapeSelector';
 
 function ToolBar(){
     const [expand, setExpand] = useState(false);
-    const [fillColor, setFillColor] = useState("#000000");
-    const [strokeColor, setStrokeColor] = useState("#FFFFFF");
+    const [fillColor, setFillColor] = useState("#00bb00");
+    const [strokeColor, setStrokeColor] = useState("#000000");
+    const [strokeWidth, setStrokeWidth] = useState(2);
+    const [selectedTool, setSelectedTool] = useState()
 
     return (
         <div className={`${styles.ToolBar} ${expand ? '' : styles.translateDown}`}>
@@ -27,10 +31,10 @@ function ToolBar(){
             <div className={styles.ToolBtns}>
                 <button><FontAwesomeIcon icon={faArrowPointer} /></button>
                 <button><FontAwesomeIcon icon={faPencil} /></button>
-                <button><FontAwesomeIcon icon={faShapes} /></button>
+                <ShapeSelector preselectedTool={selectedTool} onSelect={selectedTool}/>
                 <button><FontAwesomeIcon icon={faImage} /></button>
                 <button>T</button>
-                <button><FontAwesomeIcon icon={faBorderTopLeft} /></button>
+                <WeightSlider initialWidth={strokeWidth} onWidthChange={setStrokeWidth}/>
                 <ColorPicker initialColor={strokeColor} onColorChange={setStrokeColor}/>
                 <ColorPicker initialColor={fillColor} onColorChange={setFillColor}/>
             </div>

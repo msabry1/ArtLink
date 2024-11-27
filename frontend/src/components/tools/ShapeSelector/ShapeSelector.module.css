@@ -1,0 +1,27 @@
+.container {
+  position: relative;
+  display: flex;
+}
+
+.shapesMenu {
+  position: absolute;
+  background-color: var(--secondary-color);
+  left: 100%;
+
+  display: flex;
+
+  border-top-right-radius: 50px;
+  border-bottom-right-radius: 50px;
+
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.shapesMenu button:last-child{
+  border-top-right-radius: 50px;
+  border-bottom-right-radius: 50px;
+}
+
+.container:hover .shapesMenu {
+  opacity: 1;
+}

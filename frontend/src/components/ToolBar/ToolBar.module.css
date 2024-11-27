@@ -52,12 +52,12 @@
     border-radius: 50px;
 }
 
-.ToolBar .ToolBtns button:first-child {
+.ToolBar .ToolBtns>button:first-child {
     height: 60px;
     border-top-left-radius: 50px;
     border-top-right-radius: 50px;
 }
-.ToolBar .ToolBtns :last-child {
+.ToolBar .ToolBtns>:last-child {
     border-bottom-left-radius: 50px;
     border-bottom-right-radius: 50px;
 }
