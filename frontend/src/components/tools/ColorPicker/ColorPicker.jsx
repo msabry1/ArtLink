@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 
-function ColorPicker({ onColorChange }) {
-  const [color, setColor] = useState('#000000'); // Default color
+function ColorPicker({ initialColor, onColorChange }) {
+  const [color, setColor] = useState(initialColor); // Default color
 
   const handleInputChange = (e) => {
     setColor(e.target.value);

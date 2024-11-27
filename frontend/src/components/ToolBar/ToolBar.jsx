@@ -13,8 +13,8 @@ import ColorPicker from '../tools/ColorPicker/ColorPicker';
 
 function ToolBar(){
     const [expand, setExpand] = useState(false);
-    const [fillColor, setFillColor] = useState("#FFFFFF");
-    const [StrokeColor, setStrokeColor] = useState("#FFFFFF");
+    const [fillColor, setFillColor] = useState("#000000");
+    const [strokeColor, setStrokeColor] = useState("#FFFFFF");
 
     return (
         <div className={`${styles.ToolBar} ${expand ? '' : styles.translateDown}`}>
@@ -31,8 +31,8 @@ function ToolBar(){
                 <button><FontAwesomeIcon icon={faImage} /></button>
                 <button>T</button>
                 <button><FontAwesomeIcon icon={faBorderTopLeft} /></button>
-                <ColorPicker onColorChange={setStrokeColor}/>
-                <ColorPicker onColorChange={setFillColor}/>
+                <ColorPicker initialColor={strokeColor} onColorChange={setStrokeColor}/>
+                <ColorPicker initialColor={fillColor} onColorChange={setFillColor}/>
             </div>
         </div>
     )
