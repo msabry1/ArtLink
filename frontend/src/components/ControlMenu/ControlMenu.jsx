@@ -1,6 +1,7 @@
 import styles from './ControlMenu.module.css'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faBars,
+import { 
+    faBars,
     faRotateLeft, 
     faRotateRight, 
     faMagnifyingGlassPlus,

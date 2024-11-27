@@ -1,0 +1,69 @@
+:root{
+    --button-height: 60px;
+    --number-buttons: 8;
+    --transition-duration: 0.5s;
+}
+
+.ToolBar{
+    position: fixed;
+    bottom: 10px;
+    left: 10px;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    transition: transform var(--transition-duration) ease-in;
+}
+
+.arrowbtn{
+    border-radius: 100%;
+    width: 50px;
+    height: 50px;
+    margin-bottom: 15px;
+    transition: transform var(--transition-duration) ease-out;
+}
+
+.horizontalflip {
+    transform: rotate(180deg);
+}
+
+.translateDown {
+    transform: translateY(calc(var(--number-buttons) * var(--button-height) + 15px ));
+}
+
+.ToolBar button,
+.ToolBar input {
+    background-color: var(--secondary-color);
+    border: none;
+    font-weight: bold;
+}
+.ToolBar button:hover{
+    background-color: var(--main-color);
+    color: white;
+}
+
+.ToolBar .ToolBtns {
+    display: flex;
+    flex-direction: column;
+    
+    border-radius: 50%;
+}
+
+.ToolBar .ToolBtns button:first-child {
+    height: 60px;
+    border-top-left-radius: 50px;
+    border-top-right-radius: 50px;
+}
+.ToolBar .ToolBtns :last-child {
+    border-bottom-left-radius: 50px;
+    border-bottom-right-radius: 50px;
+}
+
+
+.ToolBar .ToolBtns button,
+.ToolBar .ToolBtns input{
+    height: var(--button-height);
+    width: 50px;
+    font-size: 1.3rem;
+}
