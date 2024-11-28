@@ -26,11 +26,10 @@ class CircleTool extends Tool {
     this.circle = new window.Konva.Circle({
       x: pointerPosition.x,
       y: pointerPosition.y,
-      radius: 0, // Start with 0 radius
+      radius: 0,
       fill: this.fillColor,
-      stroke: this.strokeColor, // Default color for the circle border
-      strokeWidth: this.strokeWidth, // Default stroke width
-      draggable: false, // Can be set to true if needed
+      stroke: this.strokeColor, 
+      strokeWidth: this.strokeWidth,
     });
 
     // Add the circle to the layer

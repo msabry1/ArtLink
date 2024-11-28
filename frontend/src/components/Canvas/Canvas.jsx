@@ -1,10 +1,10 @@
-import React, { useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { Stage, Layer, Rect, Circle, Ellipse, Line, RegularPolygon } from 'react-konva';
 import Shapes from './Shapes';
 import TOOLS from '../../Tools/Tools';
 import ToolPool from '../../Tools/ToolPool';
 
-function populate(type, attributes, drag) {
+function shapeFactory(type, attributes, drag) {
   switch (type) {
     case Shapes.RECTANGLE:
       return <Rect {...attributes} draggable={drag} />;
@@ -25,11 +25,10 @@ function populate(type, attributes, drag) {
 
 
 
-const Canvas = ({ fillColor, strokeColor, strokeWidth, selectedTool }) => {
+const Canvas = ({ fillColor, strokeColor, strokeWidth, selectedTool, toolPool }) => {
   const [shapes, setShapes] = useState([]);
   const stageRef = useRef();
   const layerRef = useRef();
-  const toolPool = new ToolPool(fillColor, strokeColor, strokeWidth);
 
   const addShape = (shape) => {
     setShapes((prevShapes) => [...prevShapes, shape]);
@@ -41,11 +40,21 @@ const Canvas = ({ fillColor, strokeColor, strokeWidth, selectedTool }) => {
     addShape,
   };
 
-  const handleMouseDown = (event) => toolPool.getTool(selectedTool)?.onMouseDown(event, canvasContext);
-  const handleMouseMove = (event) => toolPool.getTool(selectedTool)?.onMouseMove(event, canvasContext);
-  const handleMouseUp = (event) => toolPool.getTool(selectedTool)?.onMouseUp(event, canvasContext);
-  const handleDblClick = (event) => toolPool.getTool(selectedTool)?.onDblClick(event, canvasContext);
-  const handleKeyDown = (event) => toolPool.getTool(selectedTool)?.onKeyDown(event, canvasContext);
+  useEffect(() => {
+    if (stageRef.current && layerRef.current) {
+      handleMouseDown = (event) => toolPool.getTool(selectedTool)?.onMouseDown(event, canvasContext);
+      handleMouseMove = (event) => toolPool.getTool(selectedTool)?.onMouseMove(event, canvasContext);
+      handleMouseUp = (event) => toolPool.getTool(selectedTool)?.onMouseUp(event, canvasContext);
+      handleDblClick = (event) => toolPool.getTool(selectedTool)?.onDblClick(event, canvasContext);
+      handleKeyDown = (event) => toolPool.getTool(selectedTool)?.onKeyDown(event, canvasContext);
+    }
+  }, [toolPool]);
+
+  let handleMouseDown = (event) => toolPool.getTool(selectedTool)?.onMouseDown(event, canvasContext);
+  let handleMouseMove = (event) => toolPool.getTool(selectedTool)?.onMouseMove(event, canvasContext);
+  let handleMouseUp = (event) => toolPool.getTool(selectedTool)?.onMouseUp(event, canvasContext);
+  let handleDblClick = (event) => toolPool.getTool(selectedTool)?.onDblClick(event, canvasContext);
+  let handleKeyDown = (event) => toolPool.getTool(selectedTool)?.onKeyDown(event, canvasContext);
 
   return (
     <Stage
@@ -60,7 +69,7 @@ const Canvas = ({ fillColor, strokeColor, strokeWidth, selectedTool }) => {
       <Layer ref={layerRef}>
         {shapes.map((shape, index) => (
           <React.Fragment key={index}>
-            {populate(shape.type, shape.attributes, (selectedTool===TOOLS.SELECT))}
+            {shapeFactory(shape.type, shape.attributes, (selectedTool===TOOLS.SELECT))}
           </React.Fragment>
         ))}
       </Layer>

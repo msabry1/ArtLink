@@ -15,13 +15,13 @@ class ToolPool{
       this.strokeColor = strokeColor;
       this.strokeWidth = strokeWidth;
       this.tools = {
-        [TOOLS.PENCIL]: new PencilTool(this.strokeColor, this.strokeWidth),
-        [TOOLS.RECTANGLE]: new RectangleTool(this.fillColor, this.strokeColor, this.strokeWidth),
-        [TOOLS.CIRCLE]: new CircleTool(this.fillColor, this.strokeColor, this.strokeWidth),
-        [TOOLS.ELLIPSE]: new EllipseTool(this.fillColor, this.strokeColor, this.strokeWidth),
-        [TOOLS.LINE]: new LineTool(this.strokeColor, this.strokeWidth),
-        [TOOLS.POLYGON]: new PolygonTool(this.strokeColor, this.strokeWidth),
-        [TOOLS.TRIANGLE]: new TriangleTool(this.fillColor, this.strokeColor, this.strokeWidth),
+        [TOOLS.PENCIL]: new PencilTool(strokeColor, strokeWidth),
+        [TOOLS.RECTANGLE]: new RectangleTool(fillColor, strokeColor, strokeWidth),
+        [TOOLS.CIRCLE]: new CircleTool(fillColor, strokeColor, strokeWidth),
+        [TOOLS.ELLIPSE]: new EllipseTool(fillColor, strokeColor, strokeWidth),
+        [TOOLS.LINE]: new LineTool(strokeColor, strokeWidth),
+        [TOOLS.POLYGON]: new PolygonTool(fillColor, strokeColor, strokeWidth),
+        [TOOLS.TRIANGLE]: new TriangleTool(fillColor, strokeColor, strokeWidth),
         [TOOLS.SELECT]: null
       }
     }

@@ -31,7 +31,6 @@ class RectangleTool extends Tool{
       fill: this.fillColor,
       stroke: this.strokeColor, // Default color for the rectangle border
       strokeWidth: this.strokeWidth, // Default stroke width
-      draggable: false, // Can be set to true if needed
     });
 
     // Add the rectangle to the layer

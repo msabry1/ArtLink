@@ -28,7 +28,6 @@ class EllipseTool extends Tool {
       fill: this.fillColor,
       stroke: this.strokeColor,
       strokeWidth: this.strokeWidth,
-      draggable: false,
     });
 
     layer.add(this.ellipse);

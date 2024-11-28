@@ -23,7 +23,7 @@ function WeightSlider({ initialWidth, onWidthChange }) {
         <input
           id="weightSlider"
           type="range"
-          min="1"
+          min="0"
           max="100"
           value={width}
           onChange={handleInputChange}

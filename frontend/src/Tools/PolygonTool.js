@@ -3,10 +3,11 @@ import Tool from "./Tool";
 import Shapes from "../components/Canvas/Shapes";
 
 class PolygonTool extends Tool {
-  constructor(strokeColor, strokeWidth) {
+  constructor(fillColor, strokeColor, strokeWidth) {
     super();
     this.isDrawing = false;
     this.line = null;
+    this.fillColor = fillColor;
     this.strokeColor = strokeColor;
     this.strokeWidth = strokeWidth;
   }
@@ -22,8 +23,9 @@ class PolygonTool extends Tool {
     } else {
       this.line = new window.Konva.Line({
         points: [pointerPosition.x, pointerPosition.y],
+        fill: this.fillColor,
         stroke: this.strokeColor,
-        strokeWidth: this.strokeWidth,
+        strokeWidth: this.strokeWidth
       });
   
       layer.add(this.line);
@@ -61,6 +63,7 @@ function getPolygonObject(line) {
     type: Shapes.LINE,
     attributes: {
       points: line.attrs.points,
+      fill: line.attrs.fill,
       stroke: line.attrs.stroke,
       strokeWidth: line.attrs.strokeWidth,
       closed: true
