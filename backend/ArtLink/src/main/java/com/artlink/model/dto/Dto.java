@@ -1,8 +1,9 @@
-package model.dto;
+package com.artlink.model.dto;
 
-import com.example.demo.model.shapes.Shape;
+
 import lombok.Builder;
 import lombok.Data;
+import com.artlink.model.shapes.Shape;
 
 @Data
 @Builder
