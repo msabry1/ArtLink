@@ -3,17 +3,14 @@ import Tool from "./Tool";
 import Shapes from "../components/Canvas/Shapes";
 
 class PolygonTool extends Tool {
-  constructor(fillColor, strokeColor, strokeWidth) {
-    super();
+  constructor(canvasContext, fillColor, strokeColor, strokeWidth) {
+    super(canvasContext, fillColor, strokeColor, strokeWidth);
     this.isDrawing = false;
     this.line = null;
-    this.fillColor = fillColor;
-    this.strokeColor = strokeColor;
-    this.strokeWidth = strokeWidth;
   }
 
-  onMouseDown(event, canvasContext) {
-    const { stage, layer } = canvasContext;
+  onMouseDown(event) {
+    const { stage, layer } = this.canvasContext;
     this.isDrawing = true;
 
     const pointerPosition = stage.getPointerPosition();
@@ -33,10 +30,10 @@ class PolygonTool extends Tool {
     layer.batchDraw();
   }
 
-  onMouseMove(event, canvasContext) {
+  onMouseMove(event) {
     if (!this.isDrawing || !this.line) return;
 
-    const { stage, layer } = canvasContext;
+    const { stage, layer } = this.canvasContext;
     const pointerPosition = stage.getPointerPosition();
 
     const newPoints = this.line.points();
@@ -47,9 +44,9 @@ class PolygonTool extends Tool {
     layer.batchDraw();
   }
 
-  onDblClick(event, canvasContext){
+  onDblClick(event){
     if (this.line) {
-      canvasContext.addShape(getPolygonObject(this.line));
+      this.canvasContext.addShape(getPolygonObject(this.line));
       this.line.destroy();
 
       this.isDrawing = false;

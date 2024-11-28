@@ -1,21 +1,17 @@
-import { Rect } from "react-konva";
 import Tool from "./Tool";
 import Shapes from "../components/Canvas/Shapes";
 
 class RectangleTool extends Tool{
-  constructor(fillColor, strokeColor, strokeWidth) {
-    super();
+  constructor(canvasContext, fillColor, strokeColor, strokeWidth) {
+    super(canvasContext, fillColor, strokeColor, strokeWidth);
     this.isDrawing = false; // Flag to track whether drawing is in progress
     this.rectangle = null; // Reference to the current rectangle
     this.startPoint = null; // To store the starting point
-    this.fillColor = fillColor;
-    this.strokeColor = strokeColor;
-    this.strokeWidth = strokeWidth;
   }
 
   // Handle mouse down event
-  onMouseDown(event, canvasContext) {
-    const { stage, layer } = canvasContext; // Access Stage and Layer from Canvas
+  onMouseDown(event) {
+    const { stage, layer } = this.canvasContext; // Access Stage and Layer from Canvas
     this.isDrawing = true;
     console.log("start");
     // Get the position where the mouse is pressed
@@ -29,8 +25,8 @@ class RectangleTool extends Tool{
       width: 0,
       height: 0,
       fill: this.fillColor,
-      stroke: this.strokeColor, // Default color for the rectangle border
-      strokeWidth: this.strokeWidth, // Default stroke width
+      stroke: this.strokeColor, 
+      strokeWidth: this.strokeWidth,
     });
 
     // Add the rectangle to the layer
@@ -40,9 +36,9 @@ class RectangleTool extends Tool{
   }
 
   // Handle mouse move event
-  onMouseMove(event, canvasContext) {
+  onMouseMove(event) {
     if (!this.isDrawing || !this.startPoint || !this.rectangle) return;
-    const { stage, layer } = canvasContext; // Access Stage and Layer from Canvas
+    const { stage, layer } = this.canvasContext; // Access Stage and Layer from Canvas
 
     // Get the current pointer position
     const pointerPosition = stage.getPointerPosition();
@@ -59,9 +55,9 @@ class RectangleTool extends Tool{
   }
 
   // Handle mouse up event
-  onMouseUp(event, canvasContext) {
+  onMouseUp(event) {
     if(this.rectangle){
-        canvasContext.addShape(getRectObject(this.rectangle));
+        this.canvasContext.addShape(getRectObject(this.rectangle));
 
         this.rectangle.destroy();
 

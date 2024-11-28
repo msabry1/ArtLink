@@ -10,24 +10,29 @@ import TOOLS from "./Tools";
 
 class ToolPool{
 
-    constructor(fillColor, strokeColor, strokeWidth){
-      this.fillColor = fillColor;
-      this.strokeColor = strokeColor;
-      this.strokeWidth = strokeWidth;
+    constructor(fillColor, strokeColor, strokeWidth, canvasContext){
       this.tools = {
-        [TOOLS.PENCIL]: new PencilTool(strokeColor, strokeWidth),
-        [TOOLS.RECTANGLE]: new RectangleTool(fillColor, strokeColor, strokeWidth),
-        [TOOLS.CIRCLE]: new CircleTool(fillColor, strokeColor, strokeWidth),
-        [TOOLS.ELLIPSE]: new EllipseTool(fillColor, strokeColor, strokeWidth),
-        [TOOLS.LINE]: new LineTool(strokeColor, strokeWidth),
-        [TOOLS.POLYGON]: new PolygonTool(fillColor, strokeColor, strokeWidth),
-        [TOOLS.TRIANGLE]: new TriangleTool(fillColor, strokeColor, strokeWidth),
+        [TOOLS.PENCIL]: new PencilTool(canvasContext, strokeColor, strokeWidth),
+        [TOOLS.RECTANGLE]: new RectangleTool(canvasContext, fillColor, strokeColor, strokeWidth),
+        [TOOLS.CIRCLE]: new CircleTool(canvasContext, fillColor, strokeColor, strokeWidth),
+        [TOOLS.ELLIPSE]: new EllipseTool(canvasContext, fillColor, strokeColor, strokeWidth),
+        [TOOLS.LINE]: new LineTool(canvasContext, strokeColor, strokeWidth),
+        [TOOLS.POLYGON]: new PolygonTool(canvasContext, fillColor, strokeColor, strokeWidth),
+        [TOOLS.TRIANGLE]: new TriangleTool(canvasContext, fillColor, strokeColor, strokeWidth),
         [TOOLS.SELECT]: null
       }
     }
 
     getTool(toolName) {
       return this.tools[toolName]
+    }
+
+    updateContext(canvasContext) {
+      Object.values(this.tools).forEach((tool) => {
+        if (tool) {
+          tool.setContext(canvasContext); // Each tool must have a `setContext` method
+        }
+      });
     }
 }
 

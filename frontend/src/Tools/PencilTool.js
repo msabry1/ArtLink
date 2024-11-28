@@ -2,19 +2,17 @@ import Shapes from "../components/Canvas/Shapes";
 import Tool from "./Tool";
 
 class PencilTool extends Tool {
-    constructor(color, strokeWidth) {
-      super();
-      this.color = color;
-      this.strokeWidth = strokeWidth;
+    constructor(canvasContext, strokeColor, strokeWidth) {
+      super(canvasContext, null, strokeColor, strokeWidth);
       this.currentLine = null; // Temporary shape being drawn
     }
   
-    onMouseDown(event, canvasContext) {
-      const { stage, layer } = canvasContext; // Access Stage and Layer from Canvas
+    onMouseDown(event) {
+      const { stage, layer } = this.canvasContext; // Access Stage and Layer from Canvas
       const pos = stage.getPointerPosition();
       this.currentLine = new window.Konva.Line({
         points: [pos.x, pos.y],
-        stroke: this.color,
+        stroke: this.strokeColor,
         strokeWidth: this.strokeWidth,
         lineCap: 'round',
         lineJoin: 'round',
@@ -23,18 +21,20 @@ class PencilTool extends Tool {
       layer.batchDraw();
     }
   
-    onMouseMove(event, canvasContext) {
+    onMouseMove(event) {
       if (!this.currentLine) return;
-      const pos = canvasContext.stage.getPointerPosition();
+
+      const { stage, layer } = this.canvasContext;
+      const pos = stage.getPointerPosition();
       const points = this.currentLine.points().concat([pos.x, pos.y]);
       this.currentLine.points(points);
-      canvasContext.layer.batchDraw();
+      layer.batchDraw();
     }
   
-    onMouseUp(event, canvasContext) {
+    onMouseUp(event) {
       if (this.currentLine) {
         // Finalize the shape
-        canvasContext.addShape(getLineObject(this.currentLine));
+        this.canvasContext.addShape(getLineObject(this.currentLine));
         this.currentLine.destroy();
         this.currentLine = null;
       }

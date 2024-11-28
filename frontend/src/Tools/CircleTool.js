@@ -3,19 +3,16 @@ import Tool from "./Tool";
 import Shapes from "../components/Canvas/Shapes";
 
 class CircleTool extends Tool {
-  constructor(fillColor, strokeColor, strokeWidth) {
-    super();
-    this.isDrawing = false; // Flag to track whether drawing is in progress
-    this.circle = null; // Reference to the current circle
-    this.startPoint = null; // To store the starting point
-    this.fillColor = fillColor;
-    this.strokeColor = strokeColor;
-    this.strokeWidth = strokeWidth;
+  constructor(canvasContext, fillColor, strokeColor, strokeWidth) {
+    super(canvasContext, fillColor, strokeColor, strokeWidth);
+    this.isDrawing = false; 
+    this.circle = null; 
+    this.startPoint = null; 
   }
 
   // Handle mouse down event
-  onMouseDown(event, canvasContext) {
-    const { stage, layer } = canvasContext; // Access Stage and Layer from Canvas
+  onMouseDown(event) {
+    const { stage, layer } = this.canvasContext;
     this.isDrawing = true;
 
     // Get the position where the mouse is pressed
@@ -38,9 +35,9 @@ class CircleTool extends Tool {
   }
 
   // Handle mouse move event
-  onMouseMove(event, canvasContext) {
+  onMouseMove(event) {
     if (!this.isDrawing || !this.startPoint || !this.circle) return;
-    const { stage, layer } = canvasContext; // Access Stage and Layer from Canvas
+    const { stage, layer } = this.canvasContext; // Access Stage and Layer from Canvas
 
     // Get the current pointer position
     const pointerPosition = stage.getPointerPosition();
@@ -58,9 +55,9 @@ class CircleTool extends Tool {
   }
 
   // Handle mouse up event
-  onMouseUp(event, canvasContext) {
+  onMouseUp(event) {
     if (this.circle) {
-      canvasContext.addShape(getCircleObject(this.circle));
+      this.canvasContext.addShape(getCircleObject(this.circle));
 
       this.circle.destroy();
 

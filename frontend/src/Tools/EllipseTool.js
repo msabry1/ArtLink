@@ -3,18 +3,15 @@ import Tool from "./Tool";
 import Shapes from "../components/Canvas/Shapes";
 
 class EllipseTool extends Tool {
-  constructor(fillColor, strokeColor, strokeWidth) {
-    super();
+  constructor(canvasContext, fillColor, strokeColor, strokeWidth) {
+    super(canvasContext, fillColor, strokeColor, strokeWidth);
     this.isDrawing = false;
     this.ellipse = null;
     this.startPoint = null;
-    this.fillColor = fillColor;
-    this.strokeColor = strokeColor;
-    this.strokeWidth = strokeWidth;
   }
 
-  onMouseDown(event, canvasContext) {
-    const { stage, layer } = canvasContext;
+  onMouseDown(event) {
+    const { stage, layer } = this.canvasContext;
     this.isDrawing = true;
 
     const pointerPosition = stage.getPointerPosition();
@@ -34,10 +31,10 @@ class EllipseTool extends Tool {
     layer.batchDraw();
   }
 
-  onMouseMove(event, canvasContext) {
+  onMouseMove(event) {
     if (!this.isDrawing || !this.startPoint || !this.ellipse) return;
 
-    const { stage, layer } = canvasContext;
+    const { stage, layer } = this.canvasContext;
     const pointerPosition = stage.getPointerPosition();
 
     const radiusX = Math.abs(pointerPosition.x - this.startPoint.x);
@@ -49,9 +46,9 @@ class EllipseTool extends Tool {
     layer.batchDraw();
   }
 
-  onMouseUp(event, canvasContext) {
+  onMouseUp(event) {
     if (this.ellipse) {
-      canvasContext.addShape(getEllipseObject(this.ellipse));
+      this.canvasContext.addShape(getEllipseObject(this.ellipse));
       this.ellipse.destroy();
       this.isDrawing = false;
       this.ellipse = null;

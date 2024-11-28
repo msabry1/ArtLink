@@ -25,10 +25,11 @@ function shapeFactory(type, attributes, drag) {
 
 
 
-const Canvas = ({ fillColor, strokeColor, strokeWidth, selectedTool, toolPool }) => {
+const Canvas = ({ fillColor, strokeColor, strokeWidth, selectedTool }) => {
   const [shapes, setShapes] = useState([]);
   const stageRef = useRef();
   const layerRef = useRef();
+
 
   const addShape = (shape) => {
     setShapes((prevShapes) => [...prevShapes, shape]);
@@ -40,21 +41,19 @@ const Canvas = ({ fillColor, strokeColor, strokeWidth, selectedTool, toolPool })
     addShape,
   };
 
+  const toolPool = new ToolPool(fillColor, strokeColor, strokeWidth, canvasContext);
+
   useEffect(() => {
     if (stageRef.current && layerRef.current) {
-      handleMouseDown = (event) => toolPool.getTool(selectedTool)?.onMouseDown(event, canvasContext);
-      handleMouseMove = (event) => toolPool.getTool(selectedTool)?.onMouseMove(event, canvasContext);
-      handleMouseUp = (event) => toolPool.getTool(selectedTool)?.onMouseUp(event, canvasContext);
-      handleDblClick = (event) => toolPool.getTool(selectedTool)?.onDblClick(event, canvasContext);
-      handleKeyDown = (event) => toolPool.getTool(selectedTool)?.onKeyDown(event, canvasContext);
+      toolPool.updateContext({ stage: stageRef.current, layer: layerRef.current, addShape });
     }
   }, [toolPool]);
 
-  let handleMouseDown = (event) => toolPool.getTool(selectedTool)?.onMouseDown(event, canvasContext);
-  let handleMouseMove = (event) => toolPool.getTool(selectedTool)?.onMouseMove(event, canvasContext);
-  let handleMouseUp = (event) => toolPool.getTool(selectedTool)?.onMouseUp(event, canvasContext);
-  let handleDblClick = (event) => toolPool.getTool(selectedTool)?.onDblClick(event, canvasContext);
-  let handleKeyDown = (event) => toolPool.getTool(selectedTool)?.onKeyDown(event, canvasContext);
+  const handleMouseDown = (event) => toolPool.getTool(selectedTool)?.onMouseDown(event);
+  const handleMouseMove = (event) => toolPool.getTool(selectedTool)?.onMouseMove(event);
+  const handleMouseUp = (event) => toolPool.getTool(selectedTool)?.onMouseUp(event);
+  const handleDblClick = (event) => toolPool.getTool(selectedTool)?.onDblClick(event);
+  const handleKeyDown = (event) => toolPool.getTool(selectedTool)?.onKeyDown(event);
 
   return (
     <Stage

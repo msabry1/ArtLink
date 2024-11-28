@@ -3,16 +3,14 @@ import Tool from "./Tool";
 import Shapes from "../components/Canvas/Shapes";
 
 class LineTool extends Tool {
-  constructor(strokeColor, strokeWidth) {
-    super();
+  constructor(canvasContext, strokeColor, strokeWidth) {
+    super(canvasContext, null, strokeColor, strokeWidth);
     this.isDrawing = false;
     this.line = null;
-    this.strokeColor = strokeColor;
-    this.strokeWidth = strokeWidth;
   }
 
-  onMouseDown(event, canvasContext) {
-    const { stage, layer } = canvasContext;
+  onMouseDown(event) {
+    const { stage, layer } = this.canvasContext;
     this.isDrawing = true;
 
     const pointerPosition = stage.getPointerPosition();
@@ -29,10 +27,10 @@ class LineTool extends Tool {
     layer.batchDraw();
   }
 
-  onMouseMove(event, canvasContext) {
+  onMouseMove(event) {
     if (!this.isDrawing || !this.line) return;
 
-    const { stage, layer } = canvasContext;
+    const { stage, layer } = this.canvasContext;
     const pointerPosition = stage.getPointerPosition();
 
     const newPoints = this.line.points();
@@ -43,9 +41,9 @@ class LineTool extends Tool {
     layer.batchDraw();
   }
 
-  onMouseUp(event, canvasContext) {
+  onMouseUp(event) {
     if (this.line) {
-      canvasContext.addShape(getLineObject(this.line));
+      this.canvasContext.addShape(getLineObject(this.line));
       this.line.destroy();
       this.isDrawing = false;
       this.line = null;
