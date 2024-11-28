@@ -62,6 +62,9 @@ class CircleTool extends Tool {
   onMouseUp(event, canvasContext) {
     if (this.circle) {
       canvasContext.addShape(getCircleObject(this.circle));
+
+      this.circle.destroy();
+
       this.isDrawing = false;
       this.circle = null; // Reset the circle reference
       this.startPoint = null; // Reset the start point
