@@ -7,7 +7,7 @@ import com.artlink.model.shapes.Shape;
 
 @Data
 @Builder
-public class Dto {
+public class DrawingActionDto {
     private String action;
     private String type;
     private String paintId;

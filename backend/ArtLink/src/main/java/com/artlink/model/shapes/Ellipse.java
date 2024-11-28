@@ -5,6 +5,6 @@ import lombok.EqualsAndHashCode;
 
 @Data
 @EqualsAndHashCode(callSuper = true)
-public class Elipse extends Shape2d {
+public class Ellipse extends Shape2d {
     private ElipseRadius radius;
 }

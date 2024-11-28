@@ -1,0 +1,59 @@
+package com.artlink.configuration;
+
+import com.artlink.model.dto.UndoRedoDto;
+import com.artlink.model.shapes.Shape;
+import com.artlink.repository.RedisUndoRedoRepository;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.data.redis.connection.RedisConnectionFactory;
+import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.data.redis.serializer.GenericJackson2JsonRedisSerializer;
+import org.springframework.data.redis.serializer.StringRedisSerializer;
+
+@Configuration
+public class RedisConfiguration {
+
+    @Bean
+    public RedisTemplate<String, UndoRedoDto> redisUndoRedoTemplate(RedisConnectionFactory redisConnectionFactory) {
+        RedisTemplate<String, UndoRedoDto> redisTemplate = new RedisTemplate<>();
+        redisTemplate.setConnectionFactory(redisConnectionFactory);
+
+        redisTemplate.setKeySerializer(new StringRedisSerializer());
+        redisTemplate.setValueSerializer(new GenericJackson2JsonRedisSerializer());
+
+
+        redisTemplate.setHashKeySerializer(new StringRedisSerializer());
+        redisTemplate.setHashValueSerializer(new GenericJackson2JsonRedisSerializer());
+
+        return redisTemplate;
+    }
+
+    @Bean
+    public RedisTemplate<String, Shape> redisShapesTemplate(RedisConnectionFactory redisConnectionFactory) {
+        RedisTemplate<String, Shape> redisTemplate = new RedisTemplate<>();
+        redisTemplate.setConnectionFactory(redisConnectionFactory);
+
+        redisTemplate.setKeySerializer(new StringRedisSerializer());
+        redisTemplate.setValueSerializer(new GenericJackson2JsonRedisSerializer());
+
+        redisTemplate.setHashKeySerializer(new StringRedisSerializer());
+        redisTemplate.setHashValueSerializer(new GenericJackson2JsonRedisSerializer());
+
+        return redisTemplate;
+    }
+
+    @Bean
+    public RedisUndoRedoRepository redisUndoRepository(
+            RedisTemplate<String, UndoRedoDto> redisTemplate
+    ) {
+        return new RedisUndoRedoRepository(redisTemplate,"_UNDO");
+    }
+
+    @Bean
+    public RedisUndoRedoRepository redisRedoRepository(
+            RedisTemplate<String, UndoRedoDto> redisTemplate
+    ) {
+        return new RedisUndoRedoRepository(redisTemplate,"_REDO");
+    }
+}
