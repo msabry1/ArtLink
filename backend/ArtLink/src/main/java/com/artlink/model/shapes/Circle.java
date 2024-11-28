@@ -1,4 +1,4 @@
-package model.shapes;
+package com.artlink.model.shapes;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
