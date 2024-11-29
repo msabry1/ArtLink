@@ -37,7 +37,7 @@ class CircleTool extends Tool {
   // Handle mouse move event
   onMouseMove(event) {
     if (!this.isDrawing || !this.startPoint || !this.circle) return;
-    const { stage, layer } = this.canvasContext; // Access Stage and Layer from Canvas
+    const { stage, layer } = this.canvasContext;
 
     // Get the current pointer position
     const pointerPosition = stage.getPointerPosition();
@@ -62,8 +62,8 @@ class CircleTool extends Tool {
       this.circle.destroy();
 
       this.isDrawing = false;
-      this.circle = null; // Reset the circle reference
-      this.startPoint = null; // Reset the start point
+      this.circle = null;
+      this.startPoint = null;
     }
   }
 }

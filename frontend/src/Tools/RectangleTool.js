@@ -1,19 +1,19 @@
 import Tool from "./Tool";
 import Shapes from "../components/Canvas/Shapes";
+import { generateShapeId } from "../components/utils";
 
 class RectangleTool extends Tool{
   constructor(canvasContext, fillColor, strokeColor, strokeWidth) {
     super(canvasContext, fillColor, strokeColor, strokeWidth);
-    this.isDrawing = false; // Flag to track whether drawing is in progress
-    this.rectangle = null; // Reference to the current rectangle
-    this.startPoint = null; // To store the starting point
+    this.isDrawing = false; 
+    this.rectangle = null;
+    this.startPoint = null;
   }
 
   // Handle mouse down event
   onMouseDown(event) {
-    const { stage, layer } = this.canvasContext; // Access Stage and Layer from Canvas
+    const { stage, layer } = this.canvasContext;
     this.isDrawing = true;
-    console.log("start");
     // Get the position where the mouse is pressed
     const pointerPosition = stage.getPointerPosition();
     this.startPoint = pointerPosition;
@@ -31,14 +31,13 @@ class RectangleTool extends Tool{
 
     // Add the rectangle to the layer
     layer.add(this.rectangle);
-    layer.
     layer.batchDraw();
   }
 
   // Handle mouse move event
   onMouseMove(event) {
     if (!this.isDrawing || !this.startPoint || !this.rectangle) return;
-    const { stage, layer } = this.canvasContext; // Access Stage and Layer from Canvas
+    const { stage, layer } = this.canvasContext;
 
     // Get the current pointer position
     const pointerPosition = stage.getPointerPosition();
@@ -62,14 +61,15 @@ class RectangleTool extends Tool{
         this.rectangle.destroy();
 
         this.isDrawing = false;
-        this.rectangle = null; // Reset the rectangle reference
-        this.startPoint = null; // Reset the start point
+        this.rectangle = null; 
+        this.startPoint = null;
     }
   }
 }
 
 function getRectObject(rectangle){
     return {
+        id: generateShapeId(),
         type: Shapes.RECTANGLE,
         attributes: {
             x: rectangle.attrs.x,

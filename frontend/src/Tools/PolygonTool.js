@@ -22,7 +22,9 @@ class PolygonTool extends Tool {
         points: [pointerPosition.x, pointerPosition.y],
         fill: this.fillColor,
         stroke: this.strokeColor,
-        strokeWidth: this.strokeWidth
+        strokeWidth: this.strokeWidth,
+        lineCap: "round",
+        lineJoin: "round",
       });
   
       layer.add(this.line);
