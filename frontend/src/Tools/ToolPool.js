@@ -7,6 +7,8 @@ import TriangleTool from "./TriangleTool";
 import PolygonTool from "./PolygonTool";
 import LineTool from "./LineTool";
 import TOOLS from "./Tools";
+import SelectTool from "./SelectTool";
+import DrawingTool from "./drawingTool";
 
 class ToolPool{
 
@@ -19,7 +21,7 @@ class ToolPool{
         [TOOLS.LINE]: new LineTool(canvasContext, strokeColor, strokeWidth),
         [TOOLS.POLYGON]: new PolygonTool(canvasContext, fillColor, strokeColor, strokeWidth),
         [TOOLS.TRIANGLE]: new TriangleTool(canvasContext, fillColor, strokeColor, strokeWidth),
-        [TOOLS.SELECT]: null
+        [TOOLS.SELECT]: new SelectTool(canvasContext)
       }
     }
 
@@ -36,7 +38,7 @@ class ToolPool{
     }
     updateContext(fillColor, strokeColor, strokeWidth) {
       Object.values(this.tools).forEach((tool) => {
-        if (tool) {
+        if (tool instanceof DrawingTool) {
           tool.setFillColor(fillColor);
           tool.setStrokeColor(strokeColor);
           tool.setStrokeWidth(strokeWidth);
