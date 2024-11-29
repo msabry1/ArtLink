@@ -47,6 +47,8 @@ class TriangleTool extends Tool {
   onMouseUp(event) {
     if (this.triangle) {
       this.canvasContext.addShape(getTriangleObject(this.triangle));
+      this.triangle.destroy();
+
       this.isDrawing = false;
       this.triangle = null;
       this.startPoint = null;
@@ -56,6 +58,7 @@ class TriangleTool extends Tool {
 
 function getTriangleObject(triangle) {
   return {
+    id: generateShapeId(),
     type: Shapes.TRIANGLE,
     attributes: {
       points: triangle.attrs.points,

@@ -59,6 +59,7 @@ class EllipseTool extends Tool {
 
 function getEllipseObject(ellipse) {
   return {
+    id: generateShapeId(),
     type: Shapes.ELLIPSE,
     attributes: {
       x: ellipse.attrs.x,

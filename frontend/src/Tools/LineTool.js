@@ -53,6 +53,7 @@ class LineTool extends Tool {
 
 function getLineObject(line) {
   return {
+    id: generateShapeId(),
     type: Shapes.LINE,
     attributes: {
       points: line.attrs.points,

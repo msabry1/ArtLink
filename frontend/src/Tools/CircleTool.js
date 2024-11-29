@@ -70,6 +70,7 @@ class CircleTool extends Tool {
 
 function getCircleObject(circle) {
   return {
+    id: generateShapeId(),
     type: Shapes.CIRCLE,
     attributes: {
       x: circle.attrs.x,

@@ -59,13 +59,13 @@ class PolygonTool extends Tool {
 
 function getPolygonObject(line) {
   return {
+    id: generateShapeId(),
     type: Shapes.LINE,
     attributes: {
       points: line.attrs.points,
       fill: line.attrs.fill,
       stroke: line.attrs.stroke,
       strokeWidth: line.attrs.strokeWidth,
-      closed: true
     },
   };
 }
