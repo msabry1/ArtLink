@@ -1,8 +1,7 @@
-import { Line } from "react-konva";
-import Tool from "./Tool";
 import Shapes from "../components/Canvas/Shapes";
+import DrawingTool from "./drawingTool";
 
-class LineTool extends Tool {
+class LineTool extends DrawingTool {
   constructor(canvasContext, strokeColor, strokeWidth) {
     super(canvasContext, null, strokeColor, strokeWidth);
     this.isDrawing = false;

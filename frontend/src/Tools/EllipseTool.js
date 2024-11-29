@@ -1,8 +1,7 @@
-import { Ellipse } from "react-konva";
-import Tool from "./Tool";
 import Shapes from "../components/Canvas/Shapes";
+import DrawingTool from "./drawingTool";
 
-class EllipseTool extends Tool {
+class EllipseTool extends DrawingTool {
   constructor(canvasContext, fillColor, strokeColor, strokeWidth) {
     super(canvasContext, fillColor, strokeColor, strokeWidth);
     this.isDrawing = false;

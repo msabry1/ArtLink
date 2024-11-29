@@ -1,7 +1,7 @@
 import Shapes from "../components/Canvas/Shapes";
-import Tool from "./Tool";
+import DrawingTool from "./drawingTool";
 
-class PencilTool extends Tool {
+class PencilTool extends DrawingTool {
     constructor(canvasContext, strokeColor, strokeWidth) {
       super(canvasContext, null, strokeColor, strokeWidth);
       this.currentLine = null; // Temporary shape being drawn

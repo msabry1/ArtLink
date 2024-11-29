@@ -1,8 +1,8 @@
-import Tool from "./Tool";
 import Shapes from "../components/Canvas/Shapes";
 import { generateShapeId } from "../components/utils";
+import DrawingTool from "./drawingTool";
 
-class RectangleTool extends Tool{
+class RectangleTool extends DrawingTool{
   constructor(canvasContext, fillColor, strokeColor, strokeWidth) {
     super(canvasContext, fillColor, strokeColor, strokeWidth);
     this.isDrawing = false; 

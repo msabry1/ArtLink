@@ -1,8 +1,7 @@
-import { Circle } from "react-konva";
-import Tool from "./Tool";
 import Shapes from "../components/Canvas/Shapes";
+import DrawingTool from "./drawingTool";
 
-class CircleTool extends Tool {
+class CircleTool extends DrawingTool {
   constructor(canvasContext, fillColor, strokeColor, strokeWidth) {
     super(canvasContext, fillColor, strokeColor, strokeWidth);
     this.isDrawing = false; 

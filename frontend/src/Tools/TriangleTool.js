@@ -1,7 +1,7 @@
-import Tool from "./Tool";
 import Shapes from "../components/Canvas/Shapes";
+import DrawingTool from "./drawingTool";
 
-class TriangleTool extends Tool {
+class TriangleTool extends DrawingTool {
   constructor(canvasContext, fillColor, strokeColor, strokeWidth) {
     super(canvasContext, fillColor, strokeColor, strokeWidth);
     this.isDrawing = false;
