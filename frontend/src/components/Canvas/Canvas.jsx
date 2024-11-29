@@ -15,9 +15,9 @@ function shapeFactory(type, attributes, drag) {
     case Shapes.LINE:
       return <Line {...attributes} lineCap= "round" lineJoin= "round" draggable={drag} />;
     case Shapes.POLYGON:
-      return <RegularPolygon {...attributes} draggable={drag} />;
+      return <Line {...attributes} lineCap= "round" lineJoin= "round" draggable={drag} />;
     case Shapes.TRIANGLE:
-      return <RegularPolygon {...attributes} sides={3} draggable={drag} />;
+      return <Line {...attributes} draggable={drag} />;
     default:
       return <Line {...attributes} draggable={drag} />;
   }
@@ -25,7 +25,7 @@ function shapeFactory(type, attributes, drag) {
 
 
 
-const Canvas = ({ fillColor, strokeColor, strokeWidth, selectedTool }) => {
+const Canvas = ({selectedTool, toolPool }) => {
   const [shapes, setShapes] = useState([]);
   const stageRef = useRef();
   const layerRef = useRef();
@@ -35,17 +35,14 @@ const Canvas = ({ fillColor, strokeColor, strokeWidth, selectedTool }) => {
     setShapes((prevShapes) => [...prevShapes, shape]);
   };
 
-  const canvasContext = {
-    stage: stageRef.current,
-    layer: layerRef.current,
-    addShape,
-  };
-
-  const toolPool = new ToolPool(fillColor, strokeColor, strokeWidth, canvasContext);
-
   useEffect(() => {
     if (stageRef.current && layerRef.current) {
-      toolPool.updateContext({ stage: stageRef.current, layer: layerRef.current, addShape });
+      const canvasContext = {
+        stage: stageRef.current,
+        layer: layerRef.current,
+        addShape,
+      };
+      toolPool.updateCanvasContext(canvasContext);
     }
   }, [toolPool]);
 

@@ -5,7 +5,7 @@ import logo3 from '../assets/logo3.png'
 import styles from './CanvasPage.module.css'
 import ToolBar from "../components/ToolBar/ToolBar";
 import Canvas from "../components/Canvas/Canvas";
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import TOOLS from "../Tools/Tools";
 import ToolPool from "../Tools/ToolPool";
 
@@ -15,15 +15,21 @@ function CanvasPage(){
     const [fillColor, setFillColor] = useState("#00bb00");
     const [strokeColor, setStrokeColor] = useState("#000000");
     const [strokeWidth, setStrokeWidth] = useState(5);
+    const toolPool = useRef(null);
 
+    if (!toolPool.current) {
+        toolPool.current = new ToolPool(fillColor, strokeColor, strokeWidth);
+    }
+
+    useEffect(() => {
+        toolPool.current.updateContext(fillColor, strokeColor, strokeWidth );
+    }, [fillColor, strokeColor, strokeWidth]);
 
     return(
         <>
             <Canvas
-                fillColor={fillColor}
-                strokeColor={strokeColor}
-                strokeWidth={strokeWidth}
                 selectedTool={selectedTool}
+                toolPool={toolPool.current}
             />
             <ToolBar
                 fillColor={fillColor}
