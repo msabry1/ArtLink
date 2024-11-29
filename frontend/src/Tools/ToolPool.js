@@ -27,10 +27,19 @@ class ToolPool{
       return this.tools[toolName]
     }
 
-    updateContext(canvasContext) {
+    updateCanvasContext(canvasContext) {
       Object.values(this.tools).forEach((tool) => {
         if (tool) {
-          tool.setContext(canvasContext); // Each tool must have a `setContext` method
+          tool.setContext(canvasContext);
+        }
+      });
+    }
+    updateContext(fillColor, strokeColor, strokeWidth) {
+      Object.values(this.tools).forEach((tool) => {
+        if (tool) {
+          tool.setFillColor(fillColor);
+          tool.setStrokeColor(strokeColor);
+          tool.setStrokeWidth(strokeWidth);
         }
       });
     }

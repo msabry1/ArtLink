@@ -9,6 +9,15 @@ class Tool {
     setContext(canvasContext){
         this.canvasContext = canvasContext;
     }
+    setFillColor(fillColor){
+        this.fillColor = fillColor;
+    }
+    setStrokeColor(strokeColor){
+        this.strokeColor = strokeColor;
+    }
+    setStrokeWidth(strokeWidth){
+        this.strokeWidth = strokeWidth;
+    }
     onMouseDown(event) {}
     onMouseMove(event) {}
     onMouseUp(event) {}
