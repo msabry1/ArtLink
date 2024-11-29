@@ -1,7 +1,7 @@
 package com.artlink.service;
 
 import com.artlink.enums.ActionType;
-import com.artlink.model.dto.UndoRedoDto;
+import com.artlink.model.dto.UndoRedoRepositoryDto;
 import com.artlink.model.shapes.Shape;
 import com.artlink.repository.RedisShapesRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,40 +17,40 @@ public class ActionHandlerService {
         this.redisShapesRepository = redisShapesRepository;
     }
 
-    public UndoRedoDto reverseAction(UndoRedoDto undoRedoDto, String paint_id) {
-        return switch (undoRedoDto.getAction()) {
-            case ActionType.MODIFIED -> reverseModifiedAction(undoRedoDto, paint_id);
-            case ActionType.ADDED -> reverseAddedAction(undoRedoDto, paint_id);
-            case ActionType.DELETED -> reverseDeletedAction(undoRedoDto, paint_id);
+    public UndoRedoRepositoryDto handleAndReverseAction(UndoRedoRepositoryDto undoRedoRepositoryDto, String paint_id) {
+        return switch (undoRedoRepositoryDto.getAction()) {
+            case ActionType.MODIFIED -> handleAndReverseModifiedAction(undoRedoRepositoryDto, paint_id);
+            case ActionType.ADDED -> handleAndReverseAddedAction(undoRedoRepositoryDto, paint_id);
+            case ActionType.DELETED -> handleAndReverseDeletedAction(undoRedoRepositoryDto, paint_id);
             default -> throw new IllegalArgumentException("Invalid Action");
         };
     }
 
-    private UndoRedoDto reverseModifiedAction(UndoRedoDto undoRedoDto, String paint_id) {
+    private UndoRedoRepositoryDto handleAndReverseModifiedAction(UndoRedoRepositoryDto undoRedoRepositoryDto, String paint_id) {
         Shape cachedShape = redisShapesRepository.findShape(
                 paint_id,
-                undoRedoDto.getShape().getId()
+                undoRedoRepositoryDto.getShape().getId()
         );
-        redisShapesRepository.saveShape(paint_id, undoRedoDto.getShape());
-        return UndoRedoDto.builder()
+        redisShapesRepository.saveShape(paint_id, undoRedoRepositoryDto.getShape());
+        return UndoRedoRepositoryDto.builder()
                 .action(ActionType.MODIFIED)
                 .shape(cachedShape)
                 .build();
     }
 
-    private UndoRedoDto reverseAddedAction(UndoRedoDto undoRedoDto, String paint_id) {
-        redisShapesRepository.saveShape(paint_id, undoRedoDto.getShape());
-        return UndoRedoDto.builder()
+    private UndoRedoRepositoryDto handleAndReverseAddedAction(UndoRedoRepositoryDto undoRedoRepositoryDto, String paint_id) {
+        redisShapesRepository.saveShape(paint_id, undoRedoRepositoryDto.getShape());
+        return UndoRedoRepositoryDto.builder()
                 .action(ActionType.DELETED)
-                .shape(undoRedoDto.getShape())
+                .shape(undoRedoRepositoryDto.getShape())
                 .build();
     }
 
-    private UndoRedoDto reverseDeletedAction(UndoRedoDto undoRedoDto, String paint_id) {
-        redisShapesRepository.deleteShape(paint_id, undoRedoDto.getShape());
-        return UndoRedoDto.builder()
+    private UndoRedoRepositoryDto handleAndReverseDeletedAction(UndoRedoRepositoryDto undoRedoRepositoryDto, String paint_id) {
+        redisShapesRepository.deleteShape(paint_id, undoRedoRepositoryDto.getShape());
+        return UndoRedoRepositoryDto.builder()
                 .action(ActionType.ADDED)
-                .shape(undoRedoDto.getShape())
+                .shape(undoRedoRepositoryDto.getShape())
                 .build();
     }
 }

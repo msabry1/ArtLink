@@ -10,7 +10,7 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class UndoRedoDto {
+public class UndoRedoRepositoryDto {
     private  String action ;
     private Shape shape;
 }
