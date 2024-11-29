@@ -1,4 +1,5 @@
-import Shapes from "../components/Canvas/Shapes";
+import { generateShapeId } from "../components/utils";
+import Shapes from "../shapes/Shapes";
 import DrawingTool from "./drawingTool";
 
 class LineTool extends DrawingTool {
@@ -33,8 +34,8 @@ class LineTool extends DrawingTool {
     const pointerPosition = stage.getPointerPosition();
 
     const newPoints = this.line.points();
-    newPoints[2]=pointerPosition.x;
-    newPoints[3]=pointerPosition.y;
+    newPoints[2] = pointerPosition.x;
+    newPoints[3] = pointerPosition.y;
     this.line.points(newPoints);
 
     layer.batchDraw();

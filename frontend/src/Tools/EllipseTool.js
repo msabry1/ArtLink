@@ -1,4 +1,5 @@
-import Shapes from "../components/Canvas/Shapes";
+import { generateShapeId } from "../components/utils";
+import Shapes from "../shapes/Shapes";
 import DrawingTool from "./drawingTool";
 
 class EllipseTool extends DrawingTool {

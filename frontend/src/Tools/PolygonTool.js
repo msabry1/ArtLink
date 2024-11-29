@@ -1,4 +1,5 @@
-import Shapes from "../components/Canvas/Shapes";
+import { generateShapeId } from "../components/utils";
+import Shapes from "../shapes/Shapes";
 import DrawingTool from "./drawingTool";
 
 class PolygonTool extends DrawingTool {
@@ -13,8 +14,10 @@ class PolygonTool extends DrawingTool {
     this.isDrawing = true;
 
     const pointerPosition = stage.getPointerPosition();
-    if(this.line){
-      const newPoints = this.line.points().concat([pointerPosition.x, pointerPosition.y]);
+    if (this.line) {
+      const newPoints = this.line
+        .points()
+        .concat([pointerPosition.x, pointerPosition.y]);
       this.line.points(newPoints);
     } else {
       this.line = new window.Konva.Line({
@@ -25,7 +28,7 @@ class PolygonTool extends DrawingTool {
         lineCap: "round",
         lineJoin: "round",
       });
-  
+
       layer.add(this.line);
     }
     layer.batchDraw();
@@ -38,14 +41,14 @@ class PolygonTool extends DrawingTool {
     const pointerPosition = stage.getPointerPosition();
 
     const newPoints = this.line.points();
-    newPoints[newPoints.length-2]=pointerPosition.x;
-    newPoints[newPoints.length-1]=pointerPosition.y;
+    newPoints[newPoints.length - 2] = pointerPosition.x;
+    newPoints[newPoints.length - 1] = pointerPosition.y;
     this.line.points(newPoints);
 
     layer.batchDraw();
   }
 
-  onDblClick(event){
+  onDblClick(event) {
     if (this.line) {
       this.canvasContext.addShape(getPolygonObject(this.line));
       this.line.destroy();

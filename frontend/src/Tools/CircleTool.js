@@ -1,12 +1,13 @@
-import Shapes from "../components/Canvas/Shapes";
+import { generateShapeId } from "../components/utils";
+import Shapes from "../shapes/Shapes";
 import DrawingTool from "./drawingTool";
 
 class CircleTool extends DrawingTool {
   constructor(canvasContext, fillColor, strokeColor, strokeWidth) {
     super(canvasContext, fillColor, strokeColor, strokeWidth);
-    this.isDrawing = false; 
-    this.circle = null; 
-    this.startPoint = null; 
+    this.isDrawing = false;
+    this.circle = null;
+    this.startPoint = null;
   }
 
   // Handle mouse down event
@@ -24,7 +25,7 @@ class CircleTool extends DrawingTool {
       y: pointerPosition.y,
       radius: 0,
       fill: this.fillColor,
-      stroke: this.strokeColor, 
+      stroke: this.strokeColor,
       strokeWidth: this.strokeWidth,
     });
 

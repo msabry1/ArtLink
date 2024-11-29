@@ -1,4 +1,5 @@
-import Shapes from "../components/Canvas/Shapes";
+import { generateShapeId } from "../components/utils";
+import Shapes from "../shapes/Shapes";
 import DrawingTool from "./drawingTool";
 
 class TriangleTool extends DrawingTool {
@@ -17,7 +18,12 @@ class TriangleTool extends DrawingTool {
     this.startPoint = pointerPosition;
 
     this.triangle = new window.Konva.Line({
-      points: [pointerPosition.x, pointerPosition.y, pointerPosition.x, pointerPosition.y],
+      points: [
+        pointerPosition.x,
+        pointerPosition.y,
+        pointerPosition.x,
+        pointerPosition.y,
+      ],
       fill: this.fillColor,
       stroke: this.strokeColor,
       strokeWidth: this.strokeWidth,
@@ -35,9 +41,12 @@ class TriangleTool extends DrawingTool {
     const pointerPosition = stage.getPointerPosition();
 
     const points = [
-      this.startPoint.x, this.startPoint.y, // First point (start point)
-      pointerPosition.x, pointerPosition.y, // Second point (current mouse position)
-      this.startPoint.x + (pointerPosition.x - this.startPoint.x), this.startPoint.y, // Third point (base of the triangle)
+      this.startPoint.x,
+      this.startPoint.y, // First point (start point)
+      pointerPosition.x,
+      pointerPosition.y, // Second point (current mouse position)
+      this.startPoint.x + (pointerPosition.x - this.startPoint.x),
+      this.startPoint.y, // Third point (base of the triangle)
     ];
 
     this.triangle.points(points);

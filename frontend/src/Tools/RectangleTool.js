@@ -1,11 +1,11 @@
-import Shapes from "../components/Canvas/Shapes";
+import Shapes from "../shapes/Shapes";
 import { generateShapeId } from "../components/utils";
 import DrawingTool from "./drawingTool";
 
-class RectangleTool extends DrawingTool{
+class RectangleTool extends DrawingTool {
   constructor(canvasContext, fillColor, strokeColor, strokeWidth) {
     super(canvasContext, fillColor, strokeColor, strokeWidth);
-    this.isDrawing = false; 
+    this.isDrawing = false;
     this.rectangle = null;
     this.startPoint = null;
   }
@@ -25,7 +25,7 @@ class RectangleTool extends DrawingTool{
       width: 0,
       height: 0,
       fill: this.fillColor,
-      stroke: this.strokeColor, 
+      stroke: this.strokeColor,
       strokeWidth: this.strokeWidth,
     });
 
@@ -55,32 +55,32 @@ class RectangleTool extends DrawingTool{
 
   // Handle mouse up event
   onMouseUp(event) {
-    if(this.rectangle){
-        this.canvasContext.addShape(getRectObject(this.rectangle));
+    if (this.rectangle) {
+      this.canvasContext.addShape(getRectObject(this.rectangle));
 
-        this.rectangle.destroy();
+      this.rectangle.destroy();
 
-        this.isDrawing = false;
-        this.rectangle = null; 
-        this.startPoint = null;
+      this.isDrawing = false;
+      this.rectangle = null;
+      this.startPoint = null;
     }
   }
 }
 
-function getRectObject(rectangle){
-    return {
-        id: generateShapeId(),
-        type: Shapes.RECTANGLE,
-        attributes: {
-            x: rectangle.attrs.x,
-            y: rectangle.attrs.y,
-            width: rectangle.attrs.width,
-            height: rectangle.attrs.height,
-            fill: rectangle.attrs.fill,
-            stroke: rectangle.attrs.stroke,
-            strokeWidth: rectangle.attrs.strokeWidth,
-        }
-    }
+function getRectObject(rectangle) {
+  return {
+    id: generateShapeId(),
+    type: Shapes.RECTANGLE,
+    attributes: {
+      x: rectangle.attrs.x,
+      y: rectangle.attrs.y,
+      width: rectangle.attrs.width,
+      height: rectangle.attrs.height,
+      fill: rectangle.attrs.fill,
+      stroke: rectangle.attrs.stroke,
+      strokeWidth: rectangle.attrs.strokeWidth,
+    },
+  };
 }
 
 export default RectangleTool;
