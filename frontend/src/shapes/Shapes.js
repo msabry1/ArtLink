@@ -4,7 +4,9 @@ const Shapes = {
   ELLIPSE: 'ellipse',
   LINE: 'line',
   POLYGON: 'polygon',
-  TRIANGLE: 'triangle'
+  TRIANGLE: 'triangle',
+  FREE_HAND: 'freeHand',
+  
 };
 
 export default Shapes;

@@ -232,12 +232,13 @@ const ShapeComponent = ({ type, shapeProps, isSelected, onSelect, onChange, onDe
             }
           />
         );
-      case Shapes.POLYGON:
+      case Shapes.POLYGON: 
+      case Shapes.FREE_HAND:
         return (
           <Line
             {...shapeProps}
             ref={shapeRef}
-            closed={true}
+            closed={type==Shapes.POLYGON}
             lineCap="round"
             lineJoin="round"
             draggable={isSelectMode}

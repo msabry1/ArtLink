@@ -45,7 +45,7 @@ class PencilTool extends DrawingTool {
 function getLineObject(line) {
   return {
     id: generateShapeId(),
-    type: Shapes.LINE,
+    type: Shapes.FREE_HAND,
     attributes: {
       points: line.attrs.points,
       stroke: line.attrs.stroke,
