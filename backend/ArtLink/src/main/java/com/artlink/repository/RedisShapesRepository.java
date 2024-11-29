@@ -7,6 +7,7 @@ import org.springframework.data.redis.core.HashOperations;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
 import java.util.Map;
 
 @Repository
@@ -26,8 +27,8 @@ public class RedisShapesRepository {
         return hashOperations.get(paintId, shapeId);
     }
 
-    public Map<String, Shape> findAllShapes(String paintId) {
-        return hashOperations.entries(paintId);
+    public List<Shape> findAllShapes(String paintId) {
+        return hashOperations.values(paintId);
     }
 
     public void deleteShape(String paintId, Shape shape) {
