@@ -1,4 +1,4 @@
-import Shapes from './Canvas/Shapes';
+import Shapes from "../shapes/Shapes";
 
 export function isShape(tool) {
   return Object.values(Shapes).includes(tool);
