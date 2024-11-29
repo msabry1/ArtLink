@@ -62,7 +62,7 @@ class PolygonTool extends DrawingTool {
 function getPolygonObject(line) {
   return {
     id: generateShapeId(),
-    type: Shapes.LINE,
+    type: Shapes.POLYGON,
     attributes: {
       points: line.attrs.points,
       fill: line.attrs.fill,
