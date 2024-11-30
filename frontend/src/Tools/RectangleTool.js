@@ -79,7 +79,7 @@ function getRectObject(rectangle) {
       fill: rectangle.attrs.fill,
       stroke: rectangle.attrs.stroke,
       strokeWidth: rectangle.attrs.strokeWidth,
-    },
+    }
   };
 }
 
