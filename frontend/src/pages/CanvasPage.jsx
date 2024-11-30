@@ -11,7 +11,7 @@ import ToolPool from "../Tools/ToolPool";
 
 
 function CanvasPage(){
-    const [selectedTool, setSelectedTool] = useState(TOOLS.RECTANGLE);
+    const [selectedTool, setSelectedTool] = useState(TOOLS.SELECT);
     const [fillColor, setFillColor] = useState("#00bb00");
     const [strokeColor, setStrokeColor] = useState("#000000");
     const [strokeWidth, setStrokeWidth] = useState(5);
