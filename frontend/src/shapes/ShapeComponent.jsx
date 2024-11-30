@@ -54,7 +54,7 @@ const ShapeComponent = ({ id, type, shapeProps, isSelected, onSelect, onChange, 
 
   
 
-  const handleMouseMove = () => {
+  const onMouseEnter = () => {
     if (isMouseDown && isEraseMode) {
       onDelete();
     }
@@ -71,7 +71,7 @@ const ShapeComponent = ({ id, type, shapeProps, isSelected, onSelect, onChange, 
             ref={shapeRef}
             draggable={isSelectMode}
             onClick={isSelectMode?onSelect:undefined}
-            onMouseMove={handleMouseMove}
+            onMouseEnter={onMouseEnter}
             onTap={isSelectMode?onSelect:undefined}
             onDragEnd={isSelectMode?(e) => {
                 onChange({
@@ -108,7 +108,7 @@ const ShapeComponent = ({ id, type, shapeProps, isSelected, onSelect, onChange, 
             ref={shapeRef}
             draggable={isSelectMode}
             onClick={isSelectMode ? onSelect : undefined}
-            onMouseMove={handleMouseMove}
+            onMouseEnter={onMouseEnter}
             onTap={isSelectMode ? onSelect : undefined}
             onDragEnd={
               isSelectMode
@@ -149,7 +149,7 @@ const ShapeComponent = ({ id, type, shapeProps, isSelected, onSelect, onChange, 
             ref={shapeRef}
             draggable={isSelectMode}
             onClick={isSelectMode ? onSelect : undefined}
-            onMouseMove={handleMouseMove}
+            onMouseEnter={onMouseEnter}
             onTap={isSelectMode ? onSelect : undefined}
             onDragEnd={
               isSelectMode
@@ -194,7 +194,7 @@ const ShapeComponent = ({ id, type, shapeProps, isSelected, onSelect, onChange, 
             ref={shapeRef}
             draggable={isSelectMode}
             onClick={isSelectMode ? onSelect : undefined}
-            onMouseMove={handleMouseMove}
+            onMouseEnter={onMouseEnter}
             onTap={isSelectMode ? onSelect : undefined}
             onDragEnd={
               isSelectMode
@@ -239,7 +239,7 @@ const ShapeComponent = ({ id, type, shapeProps, isSelected, onSelect, onChange, 
             lineCap="round"
             lineJoin="round"
             onClick={isSelectMode ? onSelect : undefined}
-            onMouseMove={handleMouseMove}
+            onMouseEnter={onMouseEnter}
             onTap={isSelectMode ? onSelect : undefined}
             onDragEnd={
               isSelectMode
@@ -285,7 +285,7 @@ const ShapeComponent = ({ id, type, shapeProps, isSelected, onSelect, onChange, 
             lineJoin="round"
             draggable={isSelectMode}
             onClick={isSelectMode ? onSelect : undefined}
-            onMouseMove={handleMouseMove}
+            onMouseEnter={onMouseEnter}
             onTap={isSelectMode ? onSelect : undefined}
             onDragEnd={
               isSelectMode
