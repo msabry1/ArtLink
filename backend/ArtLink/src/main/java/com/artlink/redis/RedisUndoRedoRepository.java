@@ -1,11 +1,12 @@
-package com.artlink.repository;
+package com.artlink.redis;
 
 
 import com.artlink.model.dto.UndoRedoRepositoryDto;
+import com.artlink.repository.IUndoRedoCacheRepository;
 import org.springframework.data.redis.core.ListOperations;
 import org.springframework.data.redis.core.RedisTemplate;
 
-public class RedisUndoRedoRepository {
+public class RedisUndoRedoRepository implements IUndoRedoCacheRepository {
     private ListOperations<String, UndoRedoRepositoryDto> listOperations;
     private final String REDIS_OPERATION_KEY ;
 
@@ -18,7 +19,7 @@ public class RedisUndoRedoRepository {
         listOperations.rightPush(paint_id + REDIS_OPERATION_KEY, undoRedoRepositoryDto) ;
     }
 
-    public Long size(String paint_id){
+    private Long size(String paint_id){
         return listOperations.size(paint_id + REDIS_OPERATION_KEY) ;
     }
 
@@ -26,5 +27,9 @@ public class RedisUndoRedoRepository {
         UndoRedoRepositoryDto undoRedoRepositoryDto = listOperations.getLast(paint_id + REDIS_OPERATION_KEY) ;
         listOperations.rightPop(paint_id + REDIS_OPERATION_KEY) ;
         return undoRedoRepositoryDto;
+    }
+
+    public boolean isEmpty(String paint_id) {
+        return size(paint_id) == 0 ;
     }
 }

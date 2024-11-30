@@ -14,24 +14,24 @@ import org.springframework.web.bind.annotation.RestController;
 public class testController {
 
     WebSocketService webSocketService;
-    SimpMessagingTemplate messagingTemplate;
 
-    public testController(WebSocketService webSocketService, SimpMessagingTemplate messagingTemplate) {
+    public testController(WebSocketService webSocketService) {
         this.webSocketService = webSocketService;
-        this.messagingTemplate = messagingTemplate;
     }
 
     @RequestMapping("app/draw")
     public DrawingActionDto share(@RequestBody String jsonMessage) throws JsonProcessingException {
-        DrawingActionDto drawingActionDto = webSocketService.processDrawingAction(jsonMessage);
-        return drawingActionDto;
+        return webSocketService.processDrawingAction(jsonMessage);
     }
     @RequestMapping("app/undo.redo")
     public DrawingActionDto getDrawingActionDto(@RequestBody UndoRedoClientDto undoRedoClientDto) {
-        DrawingActionDto drawingActionDto = webSocketService.processUndoRedoAction(undoRedoClientDto);
-        return drawingActionDto;
+        return webSocketService.processUndoRedoAction(undoRedoClientDto);
     }
 }
+
+
+
+
 
 /*
 {

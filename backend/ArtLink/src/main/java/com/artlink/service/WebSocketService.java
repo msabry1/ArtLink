@@ -6,6 +6,6 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 
 public interface WebSocketService {
 
-    public DrawingActionDto processDrawingAction(String jsonMessage) throws JsonProcessingException;
-    public DrawingActionDto processUndoRedoAction(UndoRedoClientDto undoRedoclientDto);
+    DrawingActionDto processDrawingAction(String jsonMessage) throws JsonProcessingException;
+    DrawingActionDto processUndoRedoAction(UndoRedoClientDto undoRedoclientDto);
 }

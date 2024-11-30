@@ -9,19 +9,22 @@ import org.springframework.stereotype.Service;
 @Service
 public class DtoProcessService implements WebSocketService {
 
-    DrawingAndUndoRedoService drawingAndUndoRedoService;
+    UndoRedoService undoRedoService;
+    DrawingActionService drawingActionService;
     ShapesMappingService shapesMappingService;
 
-    public DtoProcessService(DrawingAndUndoRedoService drawingAndUndoRedoService,
-                             ShapesMappingService shapesMappingService) {
-        this.drawingAndUndoRedoService = drawingAndUndoRedoService;
+    public DtoProcessService(UndoRedoService undoRedoService,
+                             ShapesMappingService shapesMappingService,
+                             DrawingActionService drawingActionService) {
+        this.undoRedoService = undoRedoService;
         this.shapesMappingService = shapesMappingService ;
+        this.drawingActionService = drawingActionService;
     }
 
     @Override
     public DrawingActionDto processDrawingAction(String jsonMessage) throws JsonProcessingException {
         DrawingActionDto drawingActionDto = shapesMappingService.handleJsonMapping(jsonMessage);
-        drawingAndUndoRedoService.saveActionAndShape(
+        drawingActionService.execute(
                                         drawingActionDto.getPaintId(),
                                         drawingDtoToUndoRedoDto(drawingActionDto)
         );
@@ -33,9 +36,9 @@ public class DtoProcessService implements WebSocketService {
     public DrawingActionDto processUndoRedoAction(UndoRedoClientDto undoRedoclientDto) {
         UndoRedoRepositoryDto dto ;
         if( undoRedoclientDto.getAction().equals("undo")){
-            dto = drawingAndUndoRedoService.undo(undoRedoclientDto.getPaintId());
+            dto = undoRedoService.undo(undoRedoclientDto.getPaintId());
         } else if( undoRedoclientDto.getAction().equals("redo")) {
-            dto = drawingAndUndoRedoService.redo(undoRedoclientDto.getPaintId());
+            dto = undoRedoService.redo(undoRedoclientDto.getPaintId());
         } else {
             throw new IllegalArgumentException(undoRedoclientDto.getAction() + " is not supported");
         }

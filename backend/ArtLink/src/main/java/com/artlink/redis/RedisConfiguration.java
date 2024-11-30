@@ -1,8 +1,7 @@
-package com.artlink.configuration;
+package com.artlink.redis;
 
 import com.artlink.model.dto.UndoRedoRepositoryDto;
 import com.artlink.model.shapes.Shape;
-import com.artlink.repository.RedisUndoRedoRepository;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.redis.connection.RedisConnectionFactory;
@@ -40,19 +39,5 @@ public class RedisConfiguration {
         redisTemplate.setHashValueSerializer(new GenericJackson2JsonRedisSerializer());
 
         return redisTemplate;
-    }
-
-    @Bean
-    public RedisUndoRedoRepository redisUndoRepository(
-            RedisTemplate<String, UndoRedoRepositoryDto> redisTemplate
-    ) {
-        return new RedisUndoRedoRepository(redisTemplate,"_UNDO");
-    }
-
-    @Bean
-    public RedisUndoRedoRepository redisRedoRepository(
-            RedisTemplate<String, UndoRedoRepositoryDto> redisTemplate
-    ) {
-        return new RedisUndoRedoRepository(redisTemplate,"_REDO");
     }
 }
