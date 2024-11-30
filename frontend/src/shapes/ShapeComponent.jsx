@@ -1,10 +1,11 @@
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { Circle, Ellipse, Line, Transformer, RegularPolygon, Rect } from "react-konva";
 import Shapes from "./Shapes";
 
-const ShapeComponent = ({ type, shapeProps, isSelected, onSelect, onChange, onDelete, isSelectMode }) => {
+const ShapeComponent = ({ id, type, shapeProps, isSelected, onSelect, onChange, onDelete, onDuplicate, isSelectMode, isEraseMode }) => {
   const shapeRef = useRef();
   const trRef = useRef();
+  const [isMouseDown, setIsMouseDown] = useState(false);
 
   useEffect(() => {
     if (isSelected) {
@@ -16,8 +17,12 @@ const ShapeComponent = ({ type, shapeProps, isSelected, onSelect, onChange, onDe
 
   useEffect(() => {
     const handleKeyDown = (event) => {
+      console.log(event.key);
       if (event.key === 'Delete' && isSelected && isSelectMode) {
         onDelete();
+      }else if (event.key === 'c' && isSelected && isSelectMode){
+        console.log("Duplicate");
+        onDuplicate();
       }
     };
 
@@ -28,6 +33,33 @@ const ShapeComponent = ({ type, shapeProps, isSelected, onSelect, onChange, onDe
     };
   }, [isSelected, isSelectMode, onDelete]);
 
+  useEffect(() => {
+    const handleMouseDown = () => {
+      setIsMouseDown(true);
+    };
+  
+    const handleMouseUp = () => {
+      setIsMouseDown(false);
+    };
+
+    window.addEventListener('mousedown', handleMouseDown);
+    window.addEventListener('mouseup', handleMouseUp);
+
+    return () => {
+      window.removeEventListener('mousedown', handleMouseDown);
+      window.removeEventListener('mouseup', handleMouseUp);
+    };
+  }, [isEraseMode, onDelete]);
+
+
+  
+
+  const handleMouseMove = () => {
+    if (isMouseDown && isEraseMode) {
+      onDelete();
+    }
+  };
+
   // Render different shapes based on type
   const renderShape = () => {
     switch (type) {
@@ -35,10 +67,11 @@ const ShapeComponent = ({ type, shapeProps, isSelected, onSelect, onChange, onDe
         return(
           <Rect
             {...shapeProps}
+            id={id}
             ref={shapeRef}
             draggable={isSelectMode}
             onClick={isSelectMode?onSelect:undefined}
-        
+            onMouseMove={handleMouseMove}
             onTap={isSelectMode?onSelect:undefined}
             onDragEnd={isSelectMode?(e) => {
                 onChange({
@@ -71,9 +104,11 @@ const ShapeComponent = ({ type, shapeProps, isSelected, onSelect, onChange, onDe
         return (
           <Circle
             {...shapeProps}
+            id={id}
             ref={shapeRef}
             draggable={isSelectMode}
             onClick={isSelectMode ? onSelect : undefined}
+            onMouseMove={handleMouseMove}
             onTap={isSelectMode ? onSelect : undefined}
             onDragEnd={
               isSelectMode
@@ -110,9 +145,11 @@ const ShapeComponent = ({ type, shapeProps, isSelected, onSelect, onChange, onDe
         return (
           <Ellipse
             {...shapeProps}
+            id={id}
             ref={shapeRef}
             draggable={isSelectMode}
             onClick={isSelectMode ? onSelect : undefined}
+            onMouseMove={handleMouseMove}
             onTap={isSelectMode ? onSelect : undefined}
             onDragEnd={
               isSelectMode
@@ -152,10 +189,12 @@ const ShapeComponent = ({ type, shapeProps, isSelected, onSelect, onChange, onDe
         return (
           <Line
             {...shapeProps}
+            id={id}
             closed={true}
             ref={shapeRef}
             draggable={isSelectMode}
             onClick={isSelectMode ? onSelect : undefined}
+            onMouseMove={handleMouseMove}
             onTap={isSelectMode ? onSelect : undefined}
             onDragEnd={
               isSelectMode
@@ -194,11 +233,13 @@ const ShapeComponent = ({ type, shapeProps, isSelected, onSelect, onChange, onDe
         return (
           <Line
             {...shapeProps}
+            id={id}
             ref={shapeRef}
             draggable={isSelectMode}
             lineCap="round"
             lineJoin="round"
             onClick={isSelectMode ? onSelect : undefined}
+            onMouseMove={handleMouseMove}
             onTap={isSelectMode ? onSelect : undefined}
             onDragEnd={
               isSelectMode
@@ -237,12 +278,14 @@ const ShapeComponent = ({ type, shapeProps, isSelected, onSelect, onChange, onDe
         return (
           <Line
             {...shapeProps}
+            id={id}
             ref={shapeRef}
             closed={type==Shapes.POLYGON}
             lineCap="round"
             lineJoin="round"
             draggable={isSelectMode}
             onClick={isSelectMode ? onSelect : undefined}
+            onMouseMove={handleMouseMove}
             onTap={isSelectMode ? onSelect : undefined}
             onDragEnd={
               isSelectMode

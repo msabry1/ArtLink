@@ -10,6 +10,7 @@ import {
 import Shapes from "../../shapes/Shapes";
 import TOOLS from "../../Tools/Tools";
 import ShapeComponent from "../../shapes/ShapeComponent";
+import { generateShapeId } from "../utils";
 
 const Canvas = ({ selectedTool, toolPool }) => {
   const [shapes, setShapes] = useState([]);
@@ -30,7 +31,7 @@ const Canvas = ({ selectedTool, toolPool }) => {
     );
   }
 
-  const deleteShape= (shapeId) => {
+  const deleteShape = (shapeId) => {
     setShapes(shapes.filter(shape => shape.id !== shapeId));
   }
 
@@ -41,6 +42,7 @@ const Canvas = ({ selectedTool, toolPool }) => {
         stage: stageRef.current,
         layer: layerRef.current,
         addShape,
+        deleteShape
       };
       toolPool.updateCanvasContext(canvasContext);
     }
@@ -91,6 +93,7 @@ const Canvas = ({ selectedTool, toolPool }) => {
         {shapes.map((shape, index) => 
             <ShapeComponent
               key={index}
+              id={shape.id}
               type={shape.type}
               shapeProps={shape.attributes}
               isSelected={shape.id === selectedId}
@@ -102,7 +105,13 @@ const Canvas = ({ selectedTool, toolPool }) => {
                 modifyShape(shape)
               }}
               onDelete={()=>deleteShape(shape.id)}
+              onDuplicate={()=>{
+                let newShape = structuredClone(shape);
+                newShape.id = generateShapeId();
+                addShape(newShape);
+              }}
               isSelectMode= {selectedTool==TOOLS.SELECT}
+              isEraseMode= {selectedTool==TOOLS.ERASER}
             />
           )}
       </Layer>

@@ -10,6 +10,7 @@ import { useState } from 'react';
 import ColorPicker from '../tools/ColorPicker/ColorPicker';
 import WeightSlider from '../tools/WeightSlider/WeightSlider';
 import ShapeSelector from '../tools/ShapeSelector/ShapeSelector';
+import ToolSelector from '../tools/ToolSelector/ToolSelector';
 import TOOLS from '../../Tools/Tools';
 import { isShape } from '../utils';
 
@@ -32,7 +33,7 @@ function ToolBar({
             </button>
             <div className={styles.ToolBtns}>
                 <button className={selectedTool==TOOLS.SELECT?styles.selected:''} onClick={()=>setSelectedTool(TOOLS.SELECT)}><FontAwesomeIcon icon={faArrowPointer} /></button>
-                <button className={selectedTool==TOOLS.PENCIL?styles.selected:''} onClick={()=>setSelectedTool(TOOLS.PENCIL)}><FontAwesomeIcon icon={faPencil} /></button>
+                <ToolSelector selectedTool={selectedTool} setSelectedTool={setSelectedTool}/>
                 <ShapeSelector selectedTool={selectedTool} setSelectedTool={setSelectedTool}/>
                 <button className={selectedTool==TOOLS.IMAGE?styles.selected:''} onClick={()=>setSelectedTool(TOOLS.IMAGE)}><FontAwesomeIcon icon={faImage} /></button>
                 <button className={selectedTool==TOOLS.TEXT?styles.selected:''} onClick={()=>setSelectedTool(TOOLS.TEXT)}>T</button>
