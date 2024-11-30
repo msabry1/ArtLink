@@ -1,16 +1,9 @@
 import React, { useEffect, useRef, useState } from "react";
-import {
-  Stage,
-  Layer,
-  Rect,
-  Circle,
-  Ellipse,
-  Line,
-} from "react-konva";
-import Shapes from "../../shapes/Shapes";
-import TOOLS from "../../Tools/Tools";
+import { Stage, Layer } from "react-konva";
 import ShapeComponent from "../../shapes/ShapeComponent";
+import TOOLS from "../../Tools/Tools";
 import { generateShapeId } from "../utils";
+import Room from "../../API/WebSocket";
 
 const Canvas = ({ selectedTool, toolPool }) => {
   const [shapes, setShapes] = useState([]);
@@ -18,23 +11,53 @@ const Canvas = ({ selectedTool, toolPool }) => {
 
   const stageRef = useRef();
   const layerRef = useRef();
+  const roomRef = useRef(null);
 
   const addShape = (shape) => {
-    setShapes((prevShapes) => [...prevShapes, shape]);
+    localAddSahpe(shape);
+    roomRef.current.logShapeUpdate("add", shape);
+  }
+
+  const localAddSahpe = (shape) => {
+    setShapes((prevShapes) => {
+      // Check if the shape already exists based on its id
+      const shapeExists = prevShapes.some((s) => s.id === shape.id);
+      if (!shapeExists) {
+        return [...prevShapes, shape];
+      }
+      return prevShapes;
+    });
   };
 
-  const modifyShape= (updatedShape) => {
-    setShapes(
-      shapes.map((shape) =>
+  const modifyShape = (updatedShape) => {
+    localModifySahpe(updatedShape);
+    roomRef.current.logShapeUpdate("modify", updatedShape);
+  }
+
+  const localModifySahpe = (updatedShape) => {
+    setShapes( (p) => p.map((shape) =>
         shape.id === updatedShape.id ? updatedShape : shape
       )
     );
-  }
+  };
 
   const deleteShape = (shapeId) => {
-    setShapes(shapes.filter(shape => shape.id !== shapeId));
+    localDeleteSahpe(shapeId);
+    roomRef.current.logShapeUpdate("delete", { id: shapeId });
   }
 
+  const localDeleteSahpe = (shapeId) => {
+    setShapes((prevShapes) => prevShapes.filter((shape) => shape.id !== shapeId));
+  };
+
+  useEffect(() => {
+    // Initialize the Room instance
+    roomRef.current = new Room(localAddSahpe, localModifySahpe, localDeleteSahpe);
+    return () => {
+      // Disconnect when component unmounts
+      roomRef.current.disconnectRoom();
+    };
+  }, []);
 
   useEffect(() => {
     if (stageRef.current && layerRef.current) {
@@ -42,24 +65,22 @@ const Canvas = ({ selectedTool, toolPool }) => {
         stage: stageRef.current,
         layer: layerRef.current,
         addShape,
-        deleteShape
+        deleteShape,
       };
       toolPool.updateCanvasContext(canvasContext);
     }
   }, [toolPool]);
 
   useEffect(() => {
-    if(selectedTool!=TOOLS.SELECT)
+    if (selectedTool !== TOOLS.SELECT) {
       selectShape(null);
-  }, [selectedTool])
-
+    }
+  }, [selectedTool]);
 
   const checkDeselect = (e) => {
-    // deselect when clicked on empty area
     const clickedOnEmpty = e.target === e.target.getStage();
-    if (clickedOnEmpty || selectedTool != TOOLS.SELECT) {
+    if (clickedOnEmpty || selectedTool !== TOOLS.SELECT) {
       selectShape(null);
-      console.log(shapes);
     }
   };
 
@@ -91,30 +112,30 @@ const Canvas = ({ selectedTool, toolPool }) => {
       onKeyDown={handleKeyDown}
     >
       <Layer ref={layerRef}>
-        {shapes.map((shape, index) => 
-            <ShapeComponent
-              key={index}
-              id={shape.id}
-              type={shape.type}
-              shapeProps={shape.attributes}
-              isSelected={shape.id === selectedId}
-              onSelect={() => {
-                selectShape(shape.id);
-              }}
-              onChange={(newAttrs) => {
-                shape.attributes= newAttrs;
-                modifyShape(shape)
-              }}
-              onDelete={()=>deleteShape(shape.id)}
-              onDuplicate={()=>{
-                let newShape = structuredClone(shape);
-                newShape.id = generateShapeId();
-                addShape(newShape);
-              }}
-              isSelectMode= {selectedTool==TOOLS.SELECT}
-              isEraseMode= {selectedTool==TOOLS.ERASER}
-            />
-          )}
+        {shapes.map((shape, index) => (
+          <ShapeComponent
+            key={index}
+            id={shape.id}
+            type={shape.type}
+            shapeProps={shape.attributes}
+            isSelected={shape.id === selectedId}
+            onSelect={() => {
+              selectShape(shape.id);
+            }}
+            onChange={(newAttrs) => {
+              shape.attributes = newAttrs;
+              modifyShape(shape);
+            }}
+            onDelete={() => deleteShape(shape.id)}
+            onDuplicate={() => {
+              let newShape = structuredClone(shape);
+              newShape.id = generateShapeId();
+              addShape(newShape);
+            }}
+            isSelectMode={selectedTool === TOOLS.SELECT}
+            isEraseMode={selectedTool === TOOLS.ERASER}
+          />
+        ))}
       </Layer>
     </Stage>
   );
