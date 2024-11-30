@@ -85,6 +85,7 @@ const Canvas = ({ selectedTool, toolPool }) => {
       onMouseDown={handleMouseDown}
       onMouseMove={handleMouseMove}
       onMouseUp={handleMouseUp}
+      onMouseLeave={handleMouseUp}
       onDblClick={handleDblClick}
       onClick={handleClick}
       onKeyDown={handleKeyDown}
