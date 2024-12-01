@@ -13,7 +13,6 @@ const Canvas = ({ selectedTool, toolPool, room, roomId }) => {
   const layerRef = useRef();
   const roomRef = useRef();
 
-
   const addShape = (shape) => {
     localAddSahpe(shape);
     roomRef.current?.logShapeUpdate("add", shape);
@@ -52,8 +51,7 @@ const Canvas = ({ selectedTool, toolPool, room, roomId }) => {
   };
 
   useEffect(() => {
-
-
+    // adding event listenrs for key in the stage
     const handleKeyDown = (event) => {
       toolPool.getTool(selectedTool)?.onKeyDown(event);
     };
@@ -71,6 +69,8 @@ const Canvas = ({ selectedTool, toolPool, room, roomId }) => {
       const stage = stageRef.current;
       const stageContent = stage.content;
       stageContent.removeEventListener("keydown", handleKeyDown);
+
+      // finalize any text
       toolPool.getTool(TOOLS.TEXT).cleanup();
     }
     return () => {
@@ -119,8 +119,8 @@ const Canvas = ({ selectedTool, toolPool, room, roomId }) => {
     }
   };
 
+  // delegating the event listener to the selected tool
   const handleMouseDown = (event) => {
-    console.log(shapes)
     checkDeselect(event);
     toolPool.getTool(selectedTool)?.onMouseDown(event);
   };
@@ -131,7 +131,8 @@ const Canvas = ({ selectedTool, toolPool, room, roomId }) => {
     toolPool.getTool(selectedTool)?.onMouseUp(event);
   const handleDblClick = (event) =>
     toolPool.getTool(selectedTool)?.onDblClick(event);
-  const handleClick = (event) => toolPool.getTool(selectedTool)?.onClick(event);
+  const handleClick = (event) => 
+    toolPool.getTool(selectedTool)?.onClick(event);
 
   return (
     <Stage
