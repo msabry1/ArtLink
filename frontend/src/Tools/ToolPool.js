@@ -10,6 +10,7 @@ import TOOLS from "./Tools";
 import SelectTool from "./SelectTool";
 import DrawingTool from "./drawingTool";
 import EraserTool from "./EraserTool";
+import TextTool from "./TextTool";
 
 class ToolPool{
 
@@ -22,6 +23,7 @@ class ToolPool{
         [TOOLS.LINE]: new LineTool(canvasContext, strokeColor, strokeWidth),
         [TOOLS.POLYGON]: new PolygonTool(canvasContext, fillColor, strokeColor, strokeWidth),
         [TOOLS.TRIANGLE]: new TriangleTool(canvasContext, fillColor, strokeColor, strokeWidth),
+        [TOOLS.TEXT]: new TextTool(canvasContext, fillColor, strokeColor, strokeWidth),
         [TOOLS.ERASER]: new EraserTool(canvasContext),
         [TOOLS.SELECT]: new SelectTool(canvasContext)
       }

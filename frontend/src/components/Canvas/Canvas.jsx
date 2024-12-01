@@ -52,6 +52,36 @@ const Canvas = ({ selectedTool, toolPool, room, roomId }) => {
   };
 
   useEffect(() => {
+
+
+    const handleKeyDown = (event) => {
+      toolPool.getTool(selectedTool)?.onKeyDown(event);
+    };
+    if(selectedTool == TOOLS.TEXT){
+      const stage = stageRef.current;
+      if (stage) {
+        const stageContent = stage.content;
+        stageContent.tabIndex = 1;
+    
+        stageContent.addEventListener("keydown", handleKeyDown);
+        stageContent.focus();
+      } 
+
+    } else {
+      const stage = stageRef.current;
+      const stageContent = stage.content;
+      stageContent.removeEventListener("keydown", handleKeyDown);
+      toolPool.getTool(TOOLS.TEXT).cleanup();
+    }
+    return () => {
+      const stage = stageRef.current;
+      if(!stage) return;
+      const stageContent = stage.content;
+      stageContent.removeEventListener("keydown", handleKeyDown);
+    }
+  }, [toolPool, selectedTool]);
+  
+  useEffect(() => {
     // Initialize the Room instance
     room = new Room(roomId, localAddSahpe, localModifySahpe, localDeleteSahpe);
     room.connect();
@@ -69,6 +99,7 @@ const Canvas = ({ selectedTool, toolPool, room, roomId }) => {
         stage: stageRef.current,
         layer: layerRef.current,
         addShape,
+        modifyShape,
         deleteShape,
       };
       toolPool.updateCanvasContext(canvasContext);
@@ -89,18 +120,18 @@ const Canvas = ({ selectedTool, toolPool, room, roomId }) => {
   };
 
   const handleMouseDown = (event) => {
+    console.log(shapes)
     checkDeselect(event);
     toolPool.getTool(selectedTool)?.onMouseDown(event);
   };
-  const handleMouseMove = (event) =>
+  const handleMouseMove = (event) =>{
     toolPool.getTool(selectedTool)?.onMouseMove(event);
+  }
   const handleMouseUp = (event) =>
     toolPool.getTool(selectedTool)?.onMouseUp(event);
   const handleDblClick = (event) =>
     toolPool.getTool(selectedTool)?.onDblClick(event);
   const handleClick = (event) => toolPool.getTool(selectedTool)?.onClick(event);
-  const handleKeyDown = (event) =>
-    toolPool.getTool(selectedTool)?.onKeyDown(event);
 
   return (
     <Stage
@@ -113,7 +144,6 @@ const Canvas = ({ selectedTool, toolPool, room, roomId }) => {
       onMouseLeave={handleMouseUp}
       onDblClick={handleDblClick}
       onClick={handleClick}
-      onKeyDown={handleKeyDown}
     >
       <Layer ref={layerRef}>
         {shapes.map((shape, index) => (

@@ -1,6 +1,7 @@
 import React, { useEffect, useRef, useState } from "react";
-import { Circle, Ellipse, Line, Transformer, RegularPolygon, Rect } from "react-konva";
+import { Circle, Ellipse, Line, Transformer, RegularPolygon, Rect, Text } from "react-konva";
 import Shapes from "./Shapes";
+import TOOLS from "../Tools/Tools";
 
 const ShapeComponent = ({ id, type, shapeProps, isSelected, onSelect, onChange, onDelete, onDuplicate, isSelectMode, isEraseMode }) => {
   const shapeRef = useRef();
@@ -17,16 +18,16 @@ const ShapeComponent = ({ id, type, shapeProps, isSelected, onSelect, onChange, 
 
   useEffect(() => {
     const handleKeyDown = (event) => {
-      console.log(event.key);
-      if (event.key === 'Delete' && isSelected && isSelectMode) {
+      if (event.key === 'Delete') {
         onDelete();
-      }else if (event.key === 'c' && isSelected && isSelectMode){
-        console.log("Duplicate");
+      }else if (event.key === 'd'){
         onDuplicate();
       }
     };
-
-    window.addEventListener('keydown', handleKeyDown);
+    if(isSelectMode && isSelected)
+      window.addEventListener('keydown', handleKeyDown);
+    else
+      window.removeEventListener('keydown', handleKeyDown);
 
     return () => {
       window.removeEventListener('keydown', handleKeyDown);
@@ -63,6 +64,44 @@ const ShapeComponent = ({ id, type, shapeProps, isSelected, onSelect, onChange, 
   // Render different shapes based on type
   const renderShape = () => {
     switch (type) {
+      case TOOLS.TEXT:
+        return(
+          <Text 
+            {...shapeProps}
+            align= "center"
+            id={id}
+            ref={shapeRef}
+            draggable={isSelectMode}
+            onClick={isSelectMode?onSelect:undefined}
+            onMouseEnter={onMouseEnter}
+            onTap={isSelectMode?onSelect:undefined}
+            onDragEnd={isSelectMode?(e) => {
+                onChange({
+                ...shapeProps,
+                x: e.target.x(),
+                y: e.target.y(),
+                });
+            }:undefined}
+            onTransformEnd={isSelectMode?(e) => {
+              const node = shapeRef.current;
+              const scaleX = node.scaleX();
+              const scaleY = node.scaleY();
+  
+              // we will reset it back
+              node.scaleX(1);
+              node.scaleY(1);
+              onChange({
+              ...shapeProps,
+              x: node.x(),
+              y: node.y(),
+              // set minimal value
+              width: Math.max(5, node.width() * scaleX),
+              fontSize: Math.max(node.fontSize() * scaleY),
+              rotation: node.rotation()
+              });
+          }: undefined}
+          />
+        )
       case Shapes.RECTANGLE:
         return(
           <Rect
