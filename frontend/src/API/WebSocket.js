@@ -8,23 +8,29 @@ const Actions = {
     DELETE: 'delete',
   };
 class Room {
-    constructor(localAddSahpe, localModifySahpe, localDeleteSahpe){
+    constructor(roomId, localAddSahpe, localModifySahpe, localDeleteSahpe){
+        this.roomId = roomId;
         this.localAddSahpe = localAddSahpe;
         this.localModifySahpe = localModifySahpe;
         this.localDeleteSahpe = localDeleteSahpe;
         this.stompClient = null;
     }
 
-    connect(roomid){
+    setRoomId(roomId){
+        this.roomId = roomId;
+    }
+
+    connect(){
         const socket = new SockJS('http://localhost:8080/ws');
         this.stompClient = Stomp.over(socket);
         this.stompClient.connect({}, frame => {
-            this.stompClient.subscribe(`/topic/${roomid}`, (message) => {
+            this.stompClient.subscribe(`/topic/${this.roomId}`, (message) => {
                 const dto = JSON.parse(message.body);
                 console.log(dto);
                 this.applyChange(dto)
             });
         }); 
+        console.log(this.roomId);
     }
 
     applyChange(dto){
@@ -61,7 +67,7 @@ class Room {
 
         const shapeData = {
           action: action,
-          paintId: "1",
+          paintId: this.roomId,
           shape: shape
         };
         console.log('Shape Update:', JSON.stringify(shapeData, null, 2));

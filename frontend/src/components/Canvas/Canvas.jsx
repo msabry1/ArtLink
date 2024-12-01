@@ -5,16 +5,18 @@ import TOOLS from "../../Tools/Tools";
 import { generateShapeId } from "../utils";
 import Room from "../../API/WebSocket";
 
-const Canvas = ({ selectedTool, toolPool, room }) => {
+const Canvas = ({ selectedTool, toolPool, room, roomId }) => {
   const [shapes, setShapes] = useState([]);
   const [selectedId, selectShape] = useState(null);
 
   const stageRef = useRef();
   const layerRef = useRef();
+  const roomRef = useRef();
+
 
   const addShape = (shape) => {
     localAddSahpe(shape);
-    room.logShapeUpdate("add", shape);
+    roomRef.current?.logShapeUpdate("add", shape);
   }
 
   const localAddSahpe = (shape) => {
@@ -30,7 +32,7 @@ const Canvas = ({ selectedTool, toolPool, room }) => {
 
   const modifyShape = (updatedShape) => {
     localModifySahpe(updatedShape);
-    room.logShapeUpdate("modify", updatedShape);
+    roomRef.current?.logShapeUpdate("modify", updatedShape);
   }
 
   const localModifySahpe = (updatedShape) => {
@@ -42,7 +44,7 @@ const Canvas = ({ selectedTool, toolPool, room }) => {
 
   const deleteShape = (shapeId) => {
     localDeleteSahpe(shapeId);
-    room.logShapeUpdate("delete", { id: shapeId });
+    roomRef.current?.logShapeUpdate("delete", { id: shapeId });
   }
 
   const localDeleteSahpe = (shapeId) => {
@@ -51,9 +53,10 @@ const Canvas = ({ selectedTool, toolPool, room }) => {
 
   useEffect(() => {
     // Initialize the Room instance
-    if(!room)
-      room = new Room(localAddSahpe, localModifySahpe, localDeleteSahpe);
-    room.connect(1);
+    room = new Room(roomId, localAddSahpe, localModifySahpe, localDeleteSahpe);
+    room.connect();
+    roomRef.current = room;
+    console.log(`room: ${roomId}`);
     return () => {
       // Disconnect when component unmounts
       room.disconnectRoom();

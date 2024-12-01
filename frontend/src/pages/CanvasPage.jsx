@@ -1,6 +1,5 @@
+import { useParams } from 'react-router-dom';
 import ControlMenu from "../components/ControlMenu/ControlMenu";
-import logo from '../assets/logo.png'
-import logo2 from '../assets/logo2.png'
 import logo3 from '../assets/logo3.png'
 import styles from './CanvasPage.module.css'
 import ToolBar from "../components/ToolBar/ToolBar";
@@ -17,11 +16,16 @@ function CanvasPage(){
     const [strokeWidth, setStrokeWidth] = useState(5);
     const toolPool = useRef(null);
     const roomRef = useRef(null);
+    const { id } = useParams(); // Access the id parameter from the route
 
 
     if (!toolPool.current) {
         toolPool.current = new ToolPool(fillColor, strokeColor, strokeWidth);
     }
+    
+    useEffect(() => {
+        document.title = "Art Link - Drawing Canvas";
+    }, []);
 
     useEffect(() => {
         toolPool.current.updateContext(fillColor, strokeColor, strokeWidth );
@@ -33,6 +37,7 @@ function CanvasPage(){
                 selectedTool={selectedTool}
                 toolPool={toolPool.current}
                 roomRef={roomRef.current}
+                roomId={id}
             />
             <ToolBar
                 fillColor={fillColor}
