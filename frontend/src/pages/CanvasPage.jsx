@@ -16,6 +16,8 @@ function CanvasPage(){
     const [strokeColor, setStrokeColor] = useState("#000000");
     const [strokeWidth, setStrokeWidth] = useState(5);
     const toolPool = useRef(null);
+    const roomRef = useRef(null);
+
 
     if (!toolPool.current) {
         toolPool.current = new ToolPool(fillColor, strokeColor, strokeWidth);
@@ -30,6 +32,7 @@ function CanvasPage(){
             <Canvas
                 selectedTool={selectedTool}
                 toolPool={toolPool.current}
+                roomRef={roomRef.current}
             />
             <ToolBar
                 fillColor={fillColor}

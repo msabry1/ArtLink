@@ -12,7 +12,10 @@ class Room {
         this.localAddSahpe = localAddSahpe;
         this.localModifySahpe = localModifySahpe;
         this.localDeleteSahpe = localDeleteSahpe;
-        const roomid = 1; 
+        this.stompClient = null;
+    }
+
+    connect(roomid){
         const socket = new SockJS('http://localhost:8080/ws');
         this.stompClient = Stomp.over(socket);
         this.stompClient.connect({}, frame => {
@@ -41,11 +44,21 @@ class Room {
     }
 
     disconnectRoom(){
-        if(this.stompClient)
-             this.stompClient.disconnect();
+        if (this.stompClient) {
+            this.stompClient.disconnect();
+        }
+    }
+
+    isConnected() {
+        return this.stompClient && this.stompClient.connected;
     }
 
     logShapeUpdate = (action, shape) => {
+        if (!this.isConnected()) {
+            console.warn('No connection. Shape update not sent.');
+            return;
+        }
+
         const shapeData = {
           action: action,
           paintId: "1",
