@@ -4,16 +4,20 @@ import {
     faBars,
     faRotateLeft, 
     faRotateRight, 
-    faMagnifyingGlassPlus,
-    faMagnifyingGlassMinus,
     faShare,
     faArrowUpFromBracket,
-    faXmark
+    faXmark,
+    faFileArchive,
+    faSignOut,
+    faDoorOpen,
+    faUpload,
+    faFileImport
  } from '@fortawesome/free-solid-svg-icons' 
 import { useState } from 'react'
+import { Link } from 'react-router-dom'
 
 
-function ControlMenu(){
+const ControlMenu = ({ onExport }) => {
 
     const [exapand, setExpand] = useState(false);
 
@@ -26,10 +30,12 @@ function ControlMenu(){
             <div className={exapand?styles.expanded:styles.collapsed}>
                 <button><FontAwesomeIcon icon={faRotateLeft} /></button>
                 <button><FontAwesomeIcon icon={faRotateRight} /></button>
-                <button><FontAwesomeIcon icon={faMagnifyingGlassPlus} /></button>
-                <button><FontAwesomeIcon icon={faMagnifyingGlassMinus} /></button>
                 <button><FontAwesomeIcon icon={faShare} /></button>
-                <button><FontAwesomeIcon icon={faArrowUpFromBracket} /></button>
+                <button onClick={onExport}><FontAwesomeIcon icon={faFileImport} /></button>
+                <button onClick={onExport}><FontAwesomeIcon icon={faArrowUpFromBracket} /></button>
+                <button>
+                    <Link className={styles.danger} to={"/Home"}><FontAwesomeIcon icon={faDoorOpen} /></Link>
+                </button>
             </div>
         </div>
     )

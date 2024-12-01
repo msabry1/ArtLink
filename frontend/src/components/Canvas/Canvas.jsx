@@ -1,11 +1,11 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { forwardRef, useEffect, useImperativeHandle, useRef, useState } from "react";
 import { Stage, Layer } from "react-konva";
 import ShapeComponent from "../../shapes/ShapeComponent";
 import TOOLS from "../../Tools/Tools";
 import { generateShapeId } from "../utils";
 import Room from "../../API/WebSocket";
 
-const Canvas = ({ selectedTool, toolPool, room, roomId }) => {
+const Canvas = forwardRef(({ selectedTool, toolPool, room, roomId }, ref) => {
   const [shapes, setShapes] = useState([]);
   const [selectedId, selectShape] = useState(null);
 
@@ -134,6 +134,23 @@ const Canvas = ({ selectedTool, toolPool, room, roomId }) => {
   const handleClick = (event) => 
     toolPool.getTool(selectedTool)?.onClick(event);
 
+
+  // Export function
+  const exportToPNG = () => {
+    if (stageRef.current) {
+      const uri = stageRef.current.toDataURL();
+      const link = document.createElement("a");
+      link.download = "canvas-export.png";
+      link.href = uri;
+      link.click();
+    }
+  };
+
+  // Expose exportToPNG using forwardRef
+  useImperativeHandle(ref, () => ({
+    exportToPNG,
+  }));
+
   return (
     <Stage
       ref={stageRef}
@@ -174,6 +191,6 @@ const Canvas = ({ selectedTool, toolPool, room, roomId }) => {
       </Layer>
     </Stage>
   );
-};
+});
 
 export default Canvas;

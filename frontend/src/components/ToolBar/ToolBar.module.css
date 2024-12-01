@@ -3,7 +3,9 @@
     --number-buttons: 8;
     --transition-duration: 0.5s;
 }
-
+button, input {
+    cursor: pointer;
+}
 .ToolBar{
     position: fixed;
     bottom: 10px;

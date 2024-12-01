@@ -16,6 +16,7 @@ function CanvasPage(){
     const [strokeWidth, setStrokeWidth] = useState(5);
     const toolPool = useRef(null);
     const roomRef = useRef(null);
+    const canvasRef = useRef(null); // Ref for Canvas
     const { id } = useParams(); // Access the id parameter from the route
 
 
@@ -31,9 +32,16 @@ function CanvasPage(){
         toolPool.current.updateContext(fillColor, strokeColor, strokeWidth );
     }, [fillColor, strokeColor, strokeWidth]);
 
+    const handleExport = () => {
+        if (canvasRef.current) {
+          canvasRef.current.exportToPNG(); // Trigger export
+        }
+    };
+
     return(
         <>
             <Canvas
+                ref={canvasRef}
                 selectedTool={selectedTool}
                 toolPool={toolPool.current}
                 roomRef={roomRef.current}
@@ -49,7 +57,7 @@ function CanvasPage(){
                 selectedTool={selectedTool}
                 setSelectedTool={setSelectedTool}
             />
-            <ControlMenu></ControlMenu>
+            <ControlMenu onExport={handleExport}></ControlMenu>
             <img className={styles.logo} src={logo3} alt="Art Link" />
         </>
     )
