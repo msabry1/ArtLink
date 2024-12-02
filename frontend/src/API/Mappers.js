@@ -1,5 +1,7 @@
 
-export function transformDrawingActionToShape(dto) {
+export default function transformDtoToShape(dto) {
+
+    console.log(dto);
 
     if (!dto || !dto.shape) {
       throw new Error('Invalid DTO: shape is required');
@@ -21,7 +23,7 @@ export function transformDrawingActionToShape(dto) {
 }
 
 
-export function transformShapeToDrawingActionDto(shape, paintId, action) {
+export function transformShapeToDto(shape, paintId, action) {
 
     if (!shape || !shape.type || !shape.id || !shape.attributes) {
       throw new Error('Invalid shape object: type, id, and attributes are required');
@@ -42,6 +44,29 @@ export function transformShapeToDrawingActionDto(shape, paintId, action) {
     }
   
     return dto;
+  }
+
+
+  export function transformAllShapesDtoToShape(dto) {
+
+    if (!dto || !dto.type || !dto.shape || !dto.shape.id ) {
+      throw new Error('Invalid DTO: type and shape are required');
+    }
+  
+    const transformedShape = {
+      type: dto.type,
+      id: dto.shape.id || null, 
+      attributes: {}
+    };
+  
+
+    for (const [key, value] of Object.entries(dto.shape)) {
+      if (key !== 'id') {
+        transformedShape.attributes[key] = value;
+      }
+    }
+  
+    return transformedShape;
   }
   
 

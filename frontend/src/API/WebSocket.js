@@ -1,7 +1,7 @@
 import SockJS from "sockjs-client";
 import { Stomp } from "@stomp/stompjs";
-import transformDrawingActionToShape from "Mappers.js"
-import transformShapeToDrawingActionDto from "Mappers.js"
+import transformDtoToShape, { transformShapeToDto } from "./Mappers.js";
+
 
 const Actions = {
     ADD: 'add',
@@ -35,7 +35,7 @@ class Room {
     }
 
     applyChange(dto){
-        const obj = transformDrawingActionToShape(dto)
+        const obj = transformDtoToShape(dto)
         switch (dto.action) {
             case Actions.ADD:
                 this.localAddSahpe(obj);
@@ -67,8 +67,8 @@ class Room {
             return;
         }
 
-        dtoShape = transformShapeToDrawingActionDto(shape, this.roomId, action)
-        console.log('Shape Update:', JSON.stringify(shapeData, null, 2));
+        const dtoShape = transformShapeToDto(shape, this.roomId, action)
+        console.log('Shape Update:', JSON.stringify(dtoShape, null, 2));
         this.stompClient.send('/app/draw', {}, JSON.stringify(dtoShape));
       };
 
