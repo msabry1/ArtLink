@@ -4,7 +4,8 @@
     right: 10px;
 }
 
-.ControlMenu button {
+.ControlMenu>button,
+.ControlMenu>div>button {
     background-color: var(--secondary-color);
     border: none;
     border-radius: 100%;
@@ -12,7 +13,9 @@
     cursor: pointer;
 }
 
-.ControlMenu button:hover {
+
+.ControlMenu>button:hover,
+.ControlMenu>div>button:hover {
     background-color: var(--main-color);
     color: white;
 }
@@ -31,7 +34,7 @@
     gap: 5px;
 }
 
-.ControlMenu>div button {
+.ControlMenu>div>button {
     transition: 0.3s ease-in-out,
                 color 0.1s ease-in-out, 
                 background-color  0.1s ease-in-out;
@@ -39,14 +42,16 @@
     
 }
 
-.expanded button {
+.expanded>button,
+.expanded>.button {
     height: 40px;
     width: 40px;
     font-size: 0.8rem;
     opacity: 100%;
 }
 
-.collapsed button{
+.collapsed>button,
+.collapsed>.button{
     height: 0px;
     width: 0px;
     font-size: 0rem;

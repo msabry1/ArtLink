@@ -15,6 +15,7 @@ import {
  } from '@fortawesome/free-solid-svg-icons' 
 import { useRef, useState } from 'react'
 import { Link } from 'react-router-dom'
+import PopupModal from '../popupWindow/PopupModal'
 
 
 const ControlMenu = ({ onExportPNG, onExportJSON, onExportXML, onImport }) => {
@@ -22,9 +23,16 @@ const ControlMenu = ({ onExportPNG, onExportJSON, onExportXML, onImport }) => {
     const [exapand, setExpand] = useState(false);
     const inputRef = useRef();
 
+    const [isOpen, setIsOpen] = useState(false);
+    const openModal = () => setIsOpen(true);
+    const closeModal = () => setIsOpen(false);
+
     return(
         <div className={styles.ControlMenu}>
-            <button className={styles.expandBtn} onClick={() => setExpand(!exapand)}>
+            <button className={styles.expandBtn} onClick={() => {
+                setExpand(!exapand);
+                closeModal();
+            }}>
                 {exapand?<FontAwesomeIcon icon={faXmark} />:<FontAwesomeIcon icon={faBars} />}
                 
             </button>
@@ -43,9 +51,15 @@ const ControlMenu = ({ onExportPNG, onExportJSON, onExportXML, onImport }) => {
                         if (file) onImport(file);
                     }}
                 />
-                <button onClick={onExportPNG}><FontAwesomeIcon icon={faArrowUpFromBracket} />PNG</button>
-                <button onClick={onExportJSON}><FontAwesomeIcon icon={faArrowUpFromBracket} />JSON</button>
-                <button onClick={onExportXML}><FontAwesomeIcon icon={faArrowUpFromBracket} />XML</button>
+                <button 
+                    onClick={openModal} 
+                    className={styles.exportButton}
+                >
+                    <FontAwesomeIcon icon={faArrowUpFromBracket} />
+                </button>
+                {isOpen &&(<PopupModal className={styles.button} closeModal={closeModal}
+                    onExportPNG={onExportPNG} onExportJSON={onExportJSON} onExportXML={onExportXML}
+                />)}
                 <button>
                     <Link className={styles.danger} to={"/Home"}><FontAwesomeIcon icon={faDoorOpen} /></Link>
                 </button>
