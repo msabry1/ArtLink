@@ -4,6 +4,8 @@ import ShapeComponent from "../../shapes/ShapeComponent";
 import TOOLS from "../../Tools/Tools";
 import { generateShapeId } from "../utils";
 import Room from "../../API/WebSocket";
+import { saveAs } from "file-saver";
+
 
 const Canvas = forwardRef(({ selectedTool, toolPool, room, roomId }, ref) => {
   const [shapes, setShapes] = useState([]);
@@ -12,6 +14,10 @@ const Canvas = forwardRef(({ selectedTool, toolPool, room, roomId }, ref) => {
   const stageRef = useRef();
   const layerRef = useRef();
   const roomRef = useRef();
+
+  const addListOfShapes = (shapeList) => {
+    shapeList.forEach(addShape);
+  }
 
   const addShape = (shape) => {
     localAddSahpe(shape);
@@ -146,9 +152,97 @@ const Canvas = forwardRef(({ selectedTool, toolPool, room, roomId }, ref) => {
     }
   };
 
+
+  // Function to export shapes as JSON
+  const exportShapesToJSON = () => {
+    const jsonData = JSON.stringify(shapes, null, 2); // Serialize the shapes array
+    const blob = new Blob([jsonData], { type: "application/json" });
+    saveAs(blob, "shapes.json");
+  };
+
+  // Function to export shapes as XML
+  const exportShapesToXML = () => {
+    const xmlData = shapes.map(shape => `
+      <shape>
+        <id>${shape.id}</id>
+        <type>${shape.type}</type>
+        <attributes>
+          ${Object.entries(shape.attributes)
+            .map(([key, value]) =>
+              Array.isArray(value)
+                ? `<${key}>${value.join(",")}</${key}>`
+                : `<${key}>${value}</${key}>`
+            )
+            .join("")}
+        </attributes>
+      </shape>
+    `).join("");
+
+    const xmlContent = `<shapes>${xmlData}</shapes>`;
+    const blob = new Blob([xmlContent], { type: "application/xml" });
+    saveAs(blob, "shapes.xml");
+  };
+
+  // Function to load shapes from a JSON or XML file
+  const loadShapes = (file) => {
+    const reader = new FileReader();
+    const fileName = file.name.toLowerCase();
+  
+    reader.onload = (e) => {
+      if (fileName.endsWith(".json")) {
+        // Parse JSON
+        try {
+          const loadedShapes = JSON.parse(e.target.result);
+          addListOfShapes(loadedShapes); // Update shapes state
+        } catch (err) {
+          console.error("Invalid JSON file:", err);
+          alert("Failed to load JSON file. Please ensure the file is in the correct format.");
+        }
+      } else if (fileName.endsWith(".xml")) {
+        // Parse XML
+        try {
+          const parser = new DOMParser();
+          const xmlDoc = parser.parseFromString(e.target.result, "application/xml");
+          const shapeElements = xmlDoc.getElementsByTagName("shape");
+          const loadedShapes = Array.from(shapeElements).map((shapeEl) => {
+            const id = shapeEl.getElementsByTagName("id")[0].textContent;
+            const type = shapeEl.getElementsByTagName("type")[0].textContent;
+  
+            // Extract attributes
+            const attributes = {};
+            Array.from(shapeEl.getElementsByTagName("attributes")[0].children).forEach((attrEl) => {
+              const key = attrEl.tagName;
+              const value = attrEl.textContent.includes(",")
+                ? attrEl.textContent.split(",").map(Number) // Convert back to array
+                : isNaN(attrEl.textContent) ? attrEl.textContent : Number(attrEl.textContent); // Handle numbers
+              attributes[key] = value;
+            });
+  
+            return { id, type, attributes };
+          });
+  
+          addListOfShapes(loadedShapes); // Update shapes state
+        } catch (err) {
+          console.error("Invalid XML file:", err);
+          alert("Failed to load XML file. Please ensure the file is in the correct format.");
+        }
+      } else {
+        alert("Unsupported file type. Please upload a JSON or XML file.");
+      }
+    };
+  
+    reader.readAsText(file);
+  };
+  
+
+
+
   // Expose exportToPNG using forwardRef
   useImperativeHandle(ref, () => ({
     exportToPNG,
+    exportShapesToJSON,
+    exportShapesToXML,
+    loadShapes,
   }));
 
   return (

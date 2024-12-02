@@ -32,9 +32,24 @@ function CanvasPage(){
         toolPool.current.updateContext(fillColor, strokeColor, strokeWidth );
     }, [fillColor, strokeColor, strokeWidth]);
 
-    const handleExport = () => {
+    const handleExportPNG = () => {
         if (canvasRef.current) {
           canvasRef.current.exportToPNG(); // Trigger export
+        }
+    };
+    const handleExportJSON = () => {
+        if (canvasRef.current) {
+          canvasRef.current.exportShapesToJSON(); // Trigger export
+        }
+    };
+    const handleExportXML = () => {
+        if (canvasRef.current) {
+          canvasRef.current.exportShapesToXML(); // Trigger export
+        }
+    };
+    const handleImport = (file) => {
+        if (canvasRef.current) {
+          canvasRef.current.loadShapes(file); // Trigger export
         }
     };
 
@@ -57,7 +72,13 @@ function CanvasPage(){
                 selectedTool={selectedTool}
                 setSelectedTool={setSelectedTool}
             />
-            <ControlMenu onExport={handleExport}></ControlMenu>
+            <ControlMenu 
+                onExportPNG={handleExportPNG} 
+                onExportJSON={handleExportJSON}
+                onExportXML={handleExportXML}
+                onImport={handleImport}
+
+            />
             <img className={styles.logo} src={logo3} alt="Art Link" />
         </>
     )
