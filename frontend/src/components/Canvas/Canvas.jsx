@@ -5,6 +5,7 @@ import TOOLS from "../../Tools/Tools";
 import { generateShapeId } from "../utils";
 import Room from "../../API/WebSocket";
 import { saveAs } from "file-saver";
+import { fetchShapes } from "../../API/Axios";
 
 
 const Canvas = forwardRef(({ selectedTool, toolPool, roomRef, roomId }, ref) => {
@@ -16,6 +17,10 @@ const Canvas = forwardRef(({ selectedTool, toolPool, roomRef, roomId }, ref) => 
 
   const addListOfShapes = (shapeList) => {
     shapeList.forEach(addShape);
+  }
+
+  const localAddListOfShapes = (shapeList) => {
+    shapeList.forEach(localAddSahpe);
   }
 
   const addShape = (shape) => {
@@ -46,17 +51,30 @@ const Canvas = forwardRef(({ selectedTool, toolPool, roomRef, roomId }, ref) => 
     );
   };
 
-  const deleteShape = (shapeId) => {
-    localDeleteSahpe(shapeId);
-    roomRef.current?.logShapeUpdate("delete", { id: shapeId });
+  const deleteShape = (shape) => {
+    localDeleteSahpe(shape.id);
+    roomRef.current?.logShapeUpdate("delete", shape);
   }
 
   const localDeleteSahpe = (shapeId) => {
     setShapes((prevShapes) => prevShapes.filter((shape) => shape.id !== shapeId));
   };
 
+  const reloadCanvas = async () => {
+    try {
+      const shapes = await fetchShapes(roomId);
+      localAddListOfShapes(shapes);
+      console.log(shapes);
+    } catch (error) {
+      console.error('Failed to reload canvas:', error);
+    }
+  };
   useEffect(() => {
-    // adding event listenrs for key in the stage
+    reloadCanvas();
+  }, []);
+
+  useEffect(() => {
+    // adding event listenrs for keyBoard in the stage
     const handleKeyDown = (event) => {
       toolPool.getTool(selectedTool)?.onKeyDown(event);
     };
@@ -270,7 +288,7 @@ const Canvas = forwardRef(({ selectedTool, toolPool, roomRef, roomId }, ref) => 
               shape.attributes = newAttrs;
               modifyShape(shape);
             }}
-            onDelete={() => deleteShape(shape.id)}
+            onDelete={() => deleteShape(shape)}
             onDuplicate={() => {
               let newShape = structuredClone(shape);
               newShape.id = generateShapeId();
