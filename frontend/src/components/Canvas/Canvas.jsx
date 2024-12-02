@@ -46,9 +46,9 @@ const Canvas = forwardRef(({ selectedTool, toolPool, roomRef, roomId }, ref) => 
     );
   };
 
-  const deleteShape = (shapeId) => {
-    localDeleteSahpe(shapeId);
-    roomRef.current?.logShapeUpdate("delete", { id: shapeId });
+  const deleteShape = (shape) => {
+    localDeleteSahpe(shape.id);
+    roomRef.current?.logShapeUpdate("delete", shape);
   }
 
   const localDeleteSahpe = (shapeId) => {
@@ -270,7 +270,7 @@ const Canvas = forwardRef(({ selectedTool, toolPool, roomRef, roomId }, ref) => 
               shape.attributes = newAttrs;
               modifyShape(shape);
             }}
-            onDelete={() => deleteShape(shape.id)}
+            onDelete={() => deleteShape(shape)}
             onDuplicate={() => {
               let newShape = structuredClone(shape);
               newShape.id = generateShapeId();
