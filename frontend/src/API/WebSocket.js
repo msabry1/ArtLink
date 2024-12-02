@@ -73,5 +73,14 @@ class Room {
         console.log('Shape Update:', JSON.stringify(shapeData, null, 2));
         this.stompClient.send('/app/share', {}, JSON.stringify(shapeData));
       };
+
+    undo(){
+        const request = {action: "undo", paintId:this.roomId}
+        this.stompClient.send('/app/undo.redo', {}, JSON.stringify(request))
+    }
+    redo(){
+        const request = {action: "redo", paintId:this.roomId}
+        this.stompClient.send('/app/undo.redo', {}, JSON.stringify(request))
+    }
 }
 export default Room;

@@ -53,13 +53,21 @@ function CanvasPage(){
         }
     };
 
+    const handleUndo = () => {
+        if (roomRef.current) roomRef.current.undo();
+    };
+
+    const handleRedo = () => {
+        if (roomRef.current) roomRef.current.redo();
+    };
+
     return(
         <>
             <Canvas
                 ref={canvasRef}
                 selectedTool={selectedTool}
                 toolPool={toolPool.current}
-                roomRef={roomRef.current}
+                roomRef={roomRef}
                 roomId={id}
             />
             <ToolBar
@@ -77,7 +85,8 @@ function CanvasPage(){
                 onExportJSON={handleExportJSON}
                 onExportXML={handleExportXML}
                 onImport={handleImport}
-
+                onUndo={handleUndo}
+                onRedo={handleRedo}
             />
             <img className={styles.logo} src={logo3} alt="Art Link" />
         </>

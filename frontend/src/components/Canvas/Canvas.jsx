@@ -7,13 +7,12 @@ import Room from "../../API/WebSocket";
 import { saveAs } from "file-saver";
 
 
-const Canvas = forwardRef(({ selectedTool, toolPool, room, roomId }, ref) => {
+const Canvas = forwardRef(({ selectedTool, toolPool, roomRef, roomId }, ref) => {
   const [shapes, setShapes] = useState([]);
   const [selectedId, selectShape] = useState(null);
 
   const stageRef = useRef();
   const layerRef = useRef();
-  const roomRef = useRef();
 
   const addListOfShapes = (shapeList) => {
     shapeList.forEach(addShape);
@@ -89,15 +88,14 @@ const Canvas = forwardRef(({ selectedTool, toolPool, room, roomId }, ref) => {
   
   useEffect(() => {
     // Initialize the Room instance
-    room = new Room(roomId, localAddSahpe, localModifySahpe, localDeleteSahpe);
-    room.connect();
-    roomRef.current = room;
+    roomRef.current = new Room(roomId, localAddSahpe, localModifySahpe, localDeleteSahpe);
+    roomRef.current.connect();
     console.log(`room: ${roomId}`);
     return () => {
       // Disconnect when component unmounts
-      room.disconnectRoom();
+      roomRef.current.disconnectRoom();
     };
-  }, []);
+  }, [roomRef]);
 
   useEffect(() => {
     if (stageRef.current && layerRef.current) {
@@ -242,7 +240,7 @@ const Canvas = forwardRef(({ selectedTool, toolPool, room, roomId }, ref) => {
     exportToPNG,
     exportShapesToJSON,
     exportShapesToXML,
-    loadShapes,
+    loadShapes,  
   }));
 
   return (

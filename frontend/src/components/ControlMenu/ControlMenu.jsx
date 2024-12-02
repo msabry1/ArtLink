@@ -18,7 +18,7 @@ import { Link } from 'react-router-dom'
 import PopupModal from '../popupWindow/PopupModal'
 
 
-const ControlMenu = ({ onExportPNG, onExportJSON, onExportXML, onImport }) => {
+const ControlMenu = ({ onExportPNG, onExportJSON, onExportXML, onImport, onUndo, onRedo }) => {
 
     const [exapand, setExpand] = useState(false);
     const inputRef = useRef();
@@ -37,8 +37,8 @@ const ControlMenu = ({ onExportPNG, onExportJSON, onExportXML, onImport }) => {
                 
             </button>
             <div className={exapand?styles.expanded:styles.collapsed}>
-                <button><FontAwesomeIcon icon={faRotateLeft} /></button>
-                <button><FontAwesomeIcon icon={faRotateRight} /></button>
+                <button onClick={onUndo}><FontAwesomeIcon icon={faRotateLeft} /></button>
+                <button onClick={onRedo}><FontAwesomeIcon icon={faRotateRight} /></button>
                 <button><FontAwesomeIcon icon={faShare} /></button>
                 <button onClick={() => inputRef.current.click()}><FontAwesomeIcon icon={faFileImport} /></button>
                 <input
